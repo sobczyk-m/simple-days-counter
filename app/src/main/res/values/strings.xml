@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Simple Days Counter</string>
+    <string name="btn_settings_title">Settings</string>
+    <string name="btn_search_title">search</string>
+    <string name="search_button">Search button</string>
+    <string name="open_settings_button">Open settings button</string>
 </resources>

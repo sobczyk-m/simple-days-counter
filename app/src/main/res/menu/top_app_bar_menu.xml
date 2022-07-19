@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/miSearch"
+        android:icon="@drawable/ic_search"
+        android:title="@string/btn_search_title"
+        android:contentDescription="@string/search_button"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/miSettings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/btn_settings_title"
+        android:contentDescription="@string/open_settings_button"
+        app:showAsAction="ifRoom" />
+</menu>
