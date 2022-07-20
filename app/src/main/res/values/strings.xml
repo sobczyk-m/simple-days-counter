@@ -2,7 +2,27 @@
     <string name="app_name">Simple Days Counter</string>
     <string name="btn_settings_title">Settings</string>
     <string name="btn_search_title">search</string>
-    <string name="search_button">Search button</string>
-    <string name="open_settings_button">Open settings button</string>
+    <string name="btn_search_description">Search button</string>
+    <string name="btn_settings_description">Open settings button</string>
     <string name="fab_add_Countdown">Add event to countdown</string>
+
+    <string name="first_day_of_week">Monday</string>
+    <string name="second_day_of_week">Tuesday</string>
+    <string name="third_day_of_week">Wednesday</string>
+    <string name="fourth_day_of_week">Thursday</string>
+    <string name="fifth_day_of_week">Friday</string>
+    <string name="sixth_day_of_week">Saturday</string>
+    <string name="seventh_day_of_week">Sunday</string>
+
+    <string name="tv_countdown_title">TITLE:</string>
+    <string name="et_countdown_title">Select event title</string>
+    <string name="tv_countdown_date">DATE:</string>
+    <string name="et_event_date">Select event date</string>
+    <string name="tv_counting_method">CHOSE COUNTING :</string>
+    <string name="tv_day_exclude">WHICH DAYS TO COUNT?</string>
+    <string name="tv_color_pick">PICK A THEME</string>
+    <string name="rb_days">Days</string>
+    <string name="rb_weeks">Weeks</string>
+    <string name="rb_months">Months</string>
+    <string name="rb_years">Years</string>
 </resources>
