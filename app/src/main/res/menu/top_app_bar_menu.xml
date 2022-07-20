@@ -6,13 +6,13 @@
         android:id="@+id/miSearch"
         android:icon="@drawable/ic_search"
         android:title="@string/btn_search_title"
-        android:contentDescription="@string/search_button"
+        android:contentDescription="@string/btn_search_description"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/miSettings"
         android:icon="@drawable/ic_settings"
         android:title="@string/btn_settings_title"
-        android:contentDescription="@string/open_settings_button"
+        android:contentDescription="@string/btn_settings_description"
         app:showAsAction="ifRoom" />
 </menu>

@@ -4,6 +4,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     tools:context=".AddCountdownActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvColorPick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_color_pick"
+                />
+            <!-- PLACEHOLDER FOR THEMES-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:contentDescription="PLACEHOLDER"/>
+            <TextView
+                android:id="@+id/tvCountdownTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_countdown_title" />
+            <EditText
+                android:id="@+id/etCountdownTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/et_countdown_title"
+                android:autofillHints="Event title" />
+            <TextView
+                android:id="@+id/tvCountdownDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_countdown_date" />
+            <EditText
+                android:id="@+id/etCountdownDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="datetime"
+                android:hint="@string/et_event_date"
+                android:autofillHints="Event date" />
+            <TextView
+                android:id="@+id/tvCountingMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_counting_method"
+                />
+         <RadioGroup
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             android:orientation="horizontal">
+             <RadioButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/rb_days"
+                 android:checked="true"/>
+             <RadioButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/rb_weeks"/>
+             <RadioButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/rb_months"/>
+             <RadioButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/rb_years"/>
+         </RadioGroup>
+<LinearLayout
+    android:id="@+id/llDayExclude"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvDayExclude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_day_exclude"
+                />
+            <CheckBox
+                android:id="@+id/chbMonday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/first_day_of_week"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/chbTuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/second_day_of_week"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/chbWednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/third_day_of_week"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/chbThursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fourth_day_of_week"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/chbFriday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fifth_day_of_week"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/chbSaturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sixth_day_of_week"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/chbSunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seventh_day_of_week"
+                android:checked="true"/>
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
