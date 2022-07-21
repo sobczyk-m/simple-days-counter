@@ -25,4 +25,5 @@
     <string name="rb_weeks">Weeks</string>
     <string name="rb_months">Months</string>
     <string name="rb_years">Years</string>
+    <string name="ic_save">Save</string>
 </resources>

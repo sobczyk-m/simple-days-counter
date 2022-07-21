@@ -2,6 +2,7 @@ package com.example.simpledayscounter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
@@ -19,8 +20,6 @@ class AddCountdownActivity : AppCompatActivity() {
 
         val llDayExclude = findViewById<LinearLayout>(R.id.llDayExclude)
 
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         fun ifRbDaysChecked() {
             if (rbDays.isChecked) {
@@ -43,6 +42,15 @@ class AddCountdownActivity : AppCompatActivity() {
             ifRbDaysChecked()
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.add_countdown_activity_top_app_bar_menu, menu)
+
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        title = "Create Countdown"
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
