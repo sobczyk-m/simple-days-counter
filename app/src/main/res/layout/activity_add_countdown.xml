@@ -30,16 +30,19 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
                 android:contentDescription="PLACEHOLDER"/>
             <TextView
                 android:id="@+id/tvCountdownTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="@string/tv_countdown_title" />
             <EditText
                 android:id="@+id/etCountdownTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:inputType="text"
                 android:hint="@string/et_countdown_title"
                 android:autofillHints="Event title" />
@@ -47,11 +50,13 @@
                 android:id="@+id/tvCountdownDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="@string/tv_countdown_date" />
             <EditText
                 android:id="@+id/etCountdownDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:inputType="datetime"
                 android:hint="@string/et_event_date"
                 android:autofillHints="Event date" />
@@ -59,39 +64,47 @@
                 android:id="@+id/tvCountingMethod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="@string/tv_counting_method"
                 />
          <RadioGroup
              android:layout_height="wrap_content"
              android:layout_width="wrap_content"
+             android:layout_marginBottom="5dp"
              android:orientation="horizontal">
              <RadioButton
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:text="@string/rb_days"
+                 android:layout_marginEnd="5dp"
                  android:checked="true"/>
              <RadioButton
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
+                 android:layout_marginEnd="5dp"
                  android:text="@string/rb_weeks"/>
              <RadioButton
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
+                 android:layout_marginEnd="5dp"
                  android:text="@string/rb_months"/>
              <RadioButton
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
+                 android:layout_marginEnd="5dp"
                  android:text="@string/rb_years"/>
          </RadioGroup>
 <LinearLayout
     android:id="@+id/llDayExclude"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
     android:orientation="vertical">
             <TextView
                 android:id="@+id/tvDayExclude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="@string/tv_day_exclude"
                 />
             <CheckBox
