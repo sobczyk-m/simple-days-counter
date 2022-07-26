@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 
 class AddCountdownActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +22,8 @@ class AddCountdownActivity : AppCompatActivity() {
         val rbYears = findViewById<RadioButton>(R.id.rbYears)
 
         val llDayExclude = findViewById<LinearLayout>(R.id.llDayExclude)
-
+        val etCountdownTitle = findViewById<EditText>(R.id.etCountdownTitle)
+        val tvWdgEventName = findViewById<TextView>(R.id.tvWdgEventName)
 
         fun ifRbDaysChecked() {
             if (rbDays.isChecked) {
@@ -33,7 +37,7 @@ class AddCountdownActivity : AppCompatActivity() {
             ifRbDaysChecked()
         }
         rbWeeks.setOnClickListener {
-         ifRbDaysChecked()
+            ifRbDaysChecked()
         }
         rbMonths.setOnClickListener {
             ifRbDaysChecked()
@@ -42,6 +46,9 @@ class AddCountdownActivity : AppCompatActivity() {
             ifRbDaysChecked()
         }
 
+        etCountdownTitle.doAfterTextChanged {
+            tvWdgEventName.text = etCountdownTitle.text
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
