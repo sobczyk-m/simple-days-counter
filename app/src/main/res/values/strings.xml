@@ -26,4 +26,11 @@
     <string name="rb_months">Months</string>
     <string name="rb_years">Years</string>
     <string name="ic_save">Save</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Choose your countdown event</string>
+    <string name="app_widget_counting_number">126</string>
+    <string name="app_widget_counting_description">Time left to the event</string>
+    <string name="app_widget_event_name">Event Name</string>
+    <string name="app_widget_event_name_description">Event Name</string>
+    <string name="app_widget_counting_text">Days left</string>
 </resources>
