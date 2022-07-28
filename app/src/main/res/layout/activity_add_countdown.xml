@@ -75,7 +75,9 @@
                 android:layout_marginBottom="5dp"
                 android:autofillHints="Event date"
                 android:hint="@string/et_event_date"
-                android:inputType="datetime" />
+                android:inputType="date"
+                android:cursorVisible="false"
+                android:focusable="false" />
 
             <TextView
                 android:id="@+id/tvCountingMethod"

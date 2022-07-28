@@ -1,7 +1,8 @@
 package com.example.simpledayscounter
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -9,7 +10,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import java.util.*
 
 class AddCountdownActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +27,7 @@ class AddCountdownActivity : AppCompatActivity() {
         val llDayExclude = findViewById<LinearLayout>(R.id.llDayExclude)
         val etCountdownTitle = findViewById<EditText>(R.id.etCountdownTitle)
         val tvWdgEventName = findViewById<TextView>(R.id.tvWdgEventName)
+        val etCountdownDate = findViewById<EditText>(R.id.etCountdownDate)
 
         fun ifRbDaysChecked() {
             if (rbDays.isChecked) {
@@ -49,6 +53,10 @@ class AddCountdownActivity : AppCompatActivity() {
         etCountdownTitle.doAfterTextChanged {
             tvWdgEventName.text = etCountdownTitle.text
         }
+
+        etCountdownDate.setOnClickListener {
+            showDatePicker()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,5 +73,29 @@ class AddCountdownActivity : AppCompatActivity() {
             android.R.id.home -> this.finish()
         }
         return true
+    }
+
+    private fun showDatePicker() {
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val etCountdownDate = findViewById<EditText>(R.id.etCountdownDate)
+
+        val dpd = DatePickerDialog(
+            this,
+            { _, mYear, mMonth, mDayOfMonth ->
+
+                val selectedDate = "$mDayOfMonth/${mMonth + 1}/$mYear"
+
+                etCountdownDate.text = Editable.Factory.getInstance().newEditable(selectedDate)
+
+            },
+            year,
+            month,
+            dayOfMonth
+        ).show()
     }
 }
