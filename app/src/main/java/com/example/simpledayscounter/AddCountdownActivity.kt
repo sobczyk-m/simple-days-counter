@@ -2,7 +2,6 @@ package com.example.simpledayscounter
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -56,7 +55,7 @@ class AddCountdownActivity : AppCompatActivity() {
         tvWdgCountingText = findViewById(R.id.tvWdgCountingText)
         tvWdgCountingNumber = findViewById(R.id.tvWdgCountingNumber)
 
-        fun ifRbDaysChecked() {
+        fun whichCountingMethodChecked() {
             if (rbDays?.isChecked == true) {
                 llDayExclude?.visibility = View.VISIBLE
             } else {
@@ -65,16 +64,16 @@ class AddCountdownActivity : AppCompatActivity() {
         }
 
         rbDays?.setOnClickListener {
-            ifRbDaysChecked()
+            whichCountingMethodChecked()
         }
         rbWeeks?.setOnClickListener {
-            ifRbDaysChecked()
+            whichCountingMethodChecked()
         }
         rbMonths?.setOnClickListener {
-            ifRbDaysChecked()
+            whichCountingMethodChecked()
         }
         rbYears?.setOnClickListener {
-            ifRbDaysChecked()
+            whichCountingMethodChecked()
         }
 
         etCountdownTitle?.doAfterTextChanged {
