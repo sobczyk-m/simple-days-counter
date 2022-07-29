@@ -55,14 +55,6 @@ class AddCountdownActivity : AppCompatActivity() {
         tvWdgCountingText = findViewById(R.id.tvWdgCountingText)
         tvWdgCountingNumber = findViewById(R.id.tvWdgCountingNumber)
 
-        fun whichCountingMethodChecked() {
-            if (rbDays?.isChecked == true) {
-                llDayExclude?.visibility = View.VISIBLE
-            } else {
-                llDayExclude?.visibility = View.GONE
-            }
-        }
-
         rbDays?.setOnClickListener {
             whichCountingMethodChecked()
         }
@@ -99,6 +91,31 @@ class AddCountdownActivity : AppCompatActivity() {
             android.R.id.home -> this.finish()
         }
         return true
+    }
+
+    private fun whichCountingMethodChecked() {
+        when {
+            rbDays?.isChecked == true -> {
+                llDayExclude?.visibility = View.VISIBLE
+                tvWdgCountingNumber?.text = differenceInDaysStorage.toString()
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days)
+            }
+            rbWeeks?.isChecked == true -> {
+                llDayExclude?.visibility = View.GONE
+                tvWdgCountingNumber?.text = differenceInWeeksStorage.toString()
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_weeks)
+            }
+            rbMonths?.isChecked == true -> {
+                llDayExclude?.visibility = View.GONE
+                tvWdgCountingNumber?.text = differenceInMonthsStorage.toString()
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_months)
+            }
+            rbYears?.isChecked == true -> {
+                llDayExclude?.visibility = View.GONE
+                tvWdgCountingNumber?.text = differenceInYearsStorage.toString()
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years)
+            }
+        }
     }
 
     private fun showDatePicker() {
