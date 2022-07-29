@@ -15,46 +15,63 @@ import androidx.core.widget.doAfterTextChanged
 import java.util.*
 
 class AddCountdownActivity : AppCompatActivity() {
+
+    private var rbDays: RadioButton? = null
+    private var rbWeeks: RadioButton? = null
+    private var rbMonths: RadioButton? = null
+    private var rbYears: RadioButton? = null
+
+    private var llDayExclude: LinearLayout? = null
+    private var etCountdownTitle: EditText? = null
+    private var etCountdownDate: EditText? = null
+
+    private var tvWdgEventName: TextView? = null
+    private var tvWdgCountingText: TextView? = null
+    private var tvWdgCountingNumber: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_countdown)
 
-        val rbDays = findViewById<RadioButton>(R.id.rbDays)
-        val rbWeeks = findViewById<RadioButton>(R.id.rbWeeks)
-        val rbMonths = findViewById<RadioButton>(R.id.rbMonths)
-        val rbYears = findViewById<RadioButton>(R.id.rbYears)
+        rbDays = findViewById(R.id.rbDays)
+        rbWeeks = findViewById(R.id.rbWeeks)
+        rbMonths = findViewById(R.id.rbMonths)
+        rbYears = findViewById(R.id.rbYears)
 
-        val llDayExclude = findViewById<LinearLayout>(R.id.llDayExclude)
-        val etCountdownTitle = findViewById<EditText>(R.id.etCountdownTitle)
-        val tvWdgEventName = findViewById<TextView>(R.id.tvWdgEventName)
-        val etCountdownDate = findViewById<EditText>(R.id.etCountdownDate)
+        llDayExclude = findViewById(R.id.llDayExclude)
+        etCountdownTitle = findViewById(R.id.etCountdownTitle)
+        etCountdownDate = findViewById(R.id.etCountdownDate)
+
+        tvWdgEventName = findViewById(R.id.tvWdgEventName)
+        tvWdgCountingText = findViewById(R.id.tvWdgCountingText)
+        tvWdgCountingNumber = findViewById(R.id.tvWdgCountingNumber)
 
         fun ifRbDaysChecked() {
-            if (rbDays.isChecked) {
-                llDayExclude.visibility = View.VISIBLE
+            if (rbDays?.isChecked == true) {
+                llDayExclude?.visibility = View.VISIBLE
             } else {
-                llDayExclude.visibility = View.GONE
+                llDayExclude?.visibility = View.GONE
             }
         }
 
-        rbDays.setOnClickListener {
+        rbDays?.setOnClickListener {
             ifRbDaysChecked()
         }
-        rbWeeks.setOnClickListener {
+        rbWeeks?.setOnClickListener {
             ifRbDaysChecked()
         }
-        rbMonths.setOnClickListener {
+        rbMonths?.setOnClickListener {
             ifRbDaysChecked()
         }
-        rbYears.setOnClickListener {
+        rbYears?.setOnClickListener {
             ifRbDaysChecked()
         }
 
-        etCountdownTitle.doAfterTextChanged {
-            tvWdgEventName.text = etCountdownTitle.text
+        etCountdownTitle?.doAfterTextChanged {
+            tvWdgEventName?.text = etCountdownTitle?.text
         }
 
-        etCountdownDate.setOnClickListener {
+        etCountdownDate?.setOnClickListener {
             showDatePicker()
         }
     }
