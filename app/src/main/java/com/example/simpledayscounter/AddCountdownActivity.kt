@@ -2,6 +2,7 @@ package com.example.simpledayscounter
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -154,6 +155,8 @@ class AddCountdownActivity : AppCompatActivity() {
             differenceInMonthsStorage = differenceInMonths
             differenceInYearsStorage = differenceInYears
 
+            etCountdownDate?.text = Editable.Factory.getInstance().newEditable(selectedDateStorage.toString())
+            whichCountingMethodChecked()
         },
             year,
             month,
