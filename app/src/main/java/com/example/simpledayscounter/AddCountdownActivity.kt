@@ -33,11 +33,11 @@ class AddCountdownActivity : AppCompatActivity() {
     private var tvWdgCountingText: TextView? = null
     private var tvWdgCountingNumber: TextView? = null
 
-    private var selectedDateStorage: String? = ""
-    private var differenceInDaysStorage: Int? = 0
-    private var differenceInWeeksStorage: Int? = 0
-    private var differenceInMonthsStorage: Int? = 0
-    private var differenceInYearsStorage: Int? = 0
+    private var selectedDateStorage: String = ""
+    private var differenceInDaysStorage: Int = 0
+    private var differenceInWeeksStorage: Int = 0
+    private var differenceInMonthsStorage: Int = 0
+    private var differenceInYearsStorage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,34 +128,36 @@ class AddCountdownActivity : AppCompatActivity() {
         val dpd = DatePickerDialog(this, { _, mYear, mMonth, mDayOfMonth ->
 
             val selectedDate = "$mDayOfMonth/${mMonth + 1}/$mYear"
+            selectedDateStorage = selectedDate
 
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-
             val sdfSelectedDate = sdf.parse(selectedDate)
-            val selectedDateInDays = sdfSelectedDate.time / (1000 * 60 * 60 * 24)
-            val selectedDateInWeeks = sdfSelectedDate.time / (1000 * 60 * 60 * 24 * 7)
+            sdfSelectedDate?.let {
+                val selectedDateInDays = sdfSelectedDate.time / (1000 * 60 * 60 * 24)
+                val selectedDateInWeeks = sdfSelectedDate.time / (1000 * 60 * 60 * 24 * 7)
 
-            val sdfCurrentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
-            val currentDateInDays = sdfCurrentDate.time / (1000 * 60 * 60 * 24)
-            val currentDateInWeeks = sdfCurrentDate.time / (1000 * 60 * 60 * 24 * 7)
+                val sdfCurrentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
+                sdfCurrentDate?.let {
+                val currentDateInDays = sdfCurrentDate.time / (1000 * 60 * 60 * 24)
+                val currentDateInWeeks = sdfCurrentDate.time / (1000 * 60 * 60 * 24 * 7)
 
-            val differenceInDays = selectedDateInDays - currentDateInDays
-            val differenceInWeeks = selectedDateInWeeks - currentDateInWeeks
+                val differenceInDays = selectedDateInDays - currentDateInDays
+                val differenceInWeeks = selectedDateInWeeks - currentDateInWeeks
+                differenceInDaysStorage = differenceInDays.toInt()
+                differenceInWeeksStorage = differenceInWeeks.toInt()
+                }
+            }
 
             val selectedLocaleDate = of(mYear, mMonth + 1, mDayOfMonth)
             val currentLocaleDate = now()
-
             val periodBetween = between(selectedLocaleDate, currentLocaleDate)
+
             val differenceInMonths = periodBetween.months
             val differenceInYears = periodBetween.years
-
-            selectedDateStorage = selectedDate
-            differenceInDaysStorage = differenceInDays.toInt()
-            differenceInWeeksStorage = differenceInWeeks.toInt()
             differenceInMonthsStorage = differenceInMonths
             differenceInYearsStorage = differenceInYears
 
-            etCountdownDate?.text = Editable.Factory.getInstance().newEditable(selectedDateStorage.toString())
+            etCountdownDate?.text = Editable.Factory.getInstance().newEditable(selectedDateStorage)
             whichCountingMethodChecked()
         },
             year,
