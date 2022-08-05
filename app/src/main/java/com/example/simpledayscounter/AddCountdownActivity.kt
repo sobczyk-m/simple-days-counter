@@ -98,23 +98,20 @@ class AddCountdownActivity : AppCompatActivity() {
         when {
             rbDays?.isChecked == true -> {
                 llDayExclude?.visibility = View.VISIBLE
-                tvWdgCountingNumber?.text = differenceInDaysStorage.toString()
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days)
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days_left)
             }
             rbWeeks?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
-                tvWdgCountingNumber?.text = differenceInWeeksStorage.toString()
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_weeks)
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_weeks_left)
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
-                tvWdgCountingNumber?.text = differenceInMonthsStorage.toString()
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_months)
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_months_left)
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
                 tvWdgCountingNumber?.text = differenceInYearsStorage.toString()
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years)
+                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_left)
             }
         }
     }
