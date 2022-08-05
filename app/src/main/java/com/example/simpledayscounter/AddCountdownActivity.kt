@@ -17,6 +17,8 @@ import java.util.*
 import java.time.LocalDate.now
 import java.time.LocalDate.of
 import java.time.Period.between
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 class AddCountdownActivity : AppCompatActivity() {
 
@@ -110,8 +112,17 @@ class AddCountdownActivity : AppCompatActivity() {
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
-                tvWdgCountingNumber?.text = differenceInYearsStorage.toString()
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_left)
+
+                val yearFraction =
+                    ((differenceInMonthsStorage.toDouble() / 12) * 10).roundToInt().absoluteValue
+                tvWdgCountingNumber?.text = "${differenceInYearsStorage}.${yearFraction}"
+
+                if (differenceInDaysStorage < 0) {
+                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_ago)
+                } else {
+                    tvWdgCountingText?.text =
+                        getString(R.string.app_widget_counting_text_years_left)
+                }
             }
         }
     }
@@ -147,7 +158,7 @@ class AddCountdownActivity : AppCompatActivity() {
 
             val selectedLocaleDate = of(mYear, mMonth + 1, mDayOfMonth)
             val currentLocaleDate = now()
-            val periodBetween = between(selectedLocaleDate, currentLocaleDate)
+            val periodBetween = between(currentLocaleDate, selectedLocaleDate)
 
             val differenceInMonths = periodBetween.months
             val differenceInYears = periodBetween.years

@@ -36,5 +36,6 @@
     <string name="app_widget_counting_text_weeks_left">Weeks Left</string>
     <string name="app_widget_counting_text_months_left">Months Left</string>
     <string name="app_widget_counting_text_years_left">Years Left</string>
+    <string name="app_widget_counting_text_years_ago">Years Ago</string>
 
 </resources>
