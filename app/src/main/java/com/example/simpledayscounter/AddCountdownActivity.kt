@@ -40,6 +40,7 @@ class AddCountdownActivity : AppCompatActivity() {
     private var differenceInWeeksStorage: Int = 0
     private var differenceInMonthsStorage: Int = 0
     private var differenceInYearsStorage: Int = 0
+    private var differenceInDaysOfMonthStorage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,16 +100,69 @@ class AddCountdownActivity : AppCompatActivity() {
     private fun whichCountingMethodChecked() {
         when {
             rbDays?.isChecked == true -> {
+                tvWdgCountingNumber?.text = differenceInDaysStorage.toString()
                 llDayExclude?.visibility = View.VISIBLE
                 tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days_left)
             }
             rbWeeks?.isChecked == true -> {
+                tvWdgCountingNumber?.text = differenceInWeeksStorage.toString()
                 llDayExclude?.visibility = View.GONE
                 tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_weeks_left)
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_months_left)
+
+                var monthFraction = 0
+                val sumOfMonths = differenceInMonthsStorage + differenceInYearsStorage * 12
+
+                fun fractionFromTenToNine() {
+                    when (monthFraction) {
+                        10 -> monthFraction = 9
+                    }
+                }
+
+                fun calculateFraction(x: Double) {
+                    val avgOfDaysInMonths = differenceInDaysStorage.toDouble() / sumOfMonths
+                    val avgOfDayInMonth = (differenceInDaysOfMonthStorage / avgOfDaysInMonths)
+
+                    monthFraction = ((x - avgOfDayInMonth) * 10).roundToInt().absoluteValue
+                    fractionFromTenToNine()
+                }
+
+                when {
+                    sumOfMonths > 1 -> {
+                        if (differenceInDaysOfMonthStorage > 0) {
+                            calculateFraction(1.0)
+                        } else if (differenceInDaysOfMonthStorage < 0) {
+                            calculateFraction(0.0)
+                        }
+                    }
+                    sumOfMonths < -1 -> {
+                        if (differenceInDaysOfMonthStorage > 0) {
+                            calculateFraction(0.0)
+                        } else if (differenceInDaysOfMonthStorage < 0) {
+                            calculateFraction(-1.0)
+                        }
+                    }
+                    sumOfMonths == 1 || sumOfMonths == -1 -> {
+                        monthFraction =
+                            ((((differenceInDaysStorage.toDouble() / 31) * 10).absoluteValue) - 10).roundToInt()
+                        fractionFromTenToNine()
+                    }
+                    sumOfMonths == 0 -> {
+                        monthFraction =
+                            ((((differenceInDaysStorage.toDouble() / 31) * 10).absoluteValue).roundToInt())
+                        fractionFromTenToNine()
+                    }
+                    differenceInDaysOfMonthStorage == 0 -> monthFraction = 0
+                }
+
+                tvWdgCountingNumber?.text = "${sumOfMonths.absoluteValue}.${monthFraction}"
+
+                if (differenceInDaysStorage < 0) {
+                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_ago)
+                } else tvWdgCountingText?.text =
+                    getString(R.string.app_widget_counting_text_years_left)
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -146,13 +200,13 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 val sdfCurrentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
                 sdfCurrentDate?.let {
-                val currentDateInDays = sdfCurrentDate.time / (1000 * 60 * 60 * 24)
-                val currentDateInWeeks = sdfCurrentDate.time / (1000 * 60 * 60 * 24 * 7)
+                    val currentDateInDays = sdfCurrentDate.time / (1000 * 60 * 60 * 24)
+                    val currentDateInWeeks = sdfCurrentDate.time / (1000 * 60 * 60 * 24 * 7)
 
-                val differenceInDays = selectedDateInDays - currentDateInDays
-                val differenceInWeeks = selectedDateInWeeks - currentDateInWeeks
-                differenceInDaysStorage = differenceInDays.toInt()
-                differenceInWeeksStorage = differenceInWeeks.toInt()
+                    val differenceInDays = selectedDateInDays - currentDateInDays
+                    val differenceInWeeks = selectedDateInWeeks - currentDateInWeeks
+                    differenceInDaysStorage = differenceInDays.toInt()
+                    differenceInWeeksStorage = differenceInWeeks.toInt()
                 }
             }
 
@@ -164,6 +218,7 @@ class AddCountdownActivity : AppCompatActivity() {
             val differenceInYears = periodBetween.years
             differenceInMonthsStorage = differenceInMonths
             differenceInYearsStorage = differenceInYears
+            differenceInDaysOfMonthStorage = (currentLocaleDate.dayOfMonth - mDayOfMonth)
 
             etCountdownDate?.text = Editable.Factory.getInstance().newEditable(selectedDateStorage)
             whichCountingMethodChecked()
