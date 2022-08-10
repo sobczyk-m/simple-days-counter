@@ -102,7 +102,11 @@ class AddCountdownActivity : AppCompatActivity() {
             rbDays?.isChecked == true -> {
                 tvWdgCountingNumber?.text = differenceInDaysStorage.toString()
                 llDayExclude?.visibility = View.VISIBLE
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days_left)
+
+                if (differenceInDaysStorage < 0) {
+                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days_ago)
+                } else tvWdgCountingText?.text =
+                    getString(R.string.app_widget_counting_text_days_left)
             }
             rbWeeks?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -113,9 +117,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 tvWdgCountingNumber?.text = "${wholeWeeks.toInt()}.${weekFraction.roundToInt()}"
 
                 if (differenceInDaysStorage < 0) {
-                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_ago)
+                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_weeks_ago)
                 } else tvWdgCountingText?.text =
-                    getString(R.string.app_widget_counting_text_years_left)
+                    getString(R.string.app_widget_counting_text_weeks_left)
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -168,9 +172,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 tvWdgCountingNumber?.text = "${sumOfMonths.absoluteValue}.${monthFraction}"
 
                 if (differenceInDaysStorage < 0) {
-                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_ago)
+                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_months_ago)
                 } else tvWdgCountingText?.text =
-                    getString(R.string.app_widget_counting_text_years_left)
+                    getString(R.string.app_widget_counting_text_months_left)
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
