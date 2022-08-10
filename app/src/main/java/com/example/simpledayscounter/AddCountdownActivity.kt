@@ -105,9 +105,17 @@ class AddCountdownActivity : AppCompatActivity() {
                 tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_days_left)
             }
             rbWeeks?.isChecked == true -> {
-                tvWdgCountingNumber?.text = differenceInWeeksStorage.toString()
                 llDayExclude?.visibility = View.GONE
-                tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_weeks_left)
+
+                val wholeWeeks = kotlin.math.floor(differenceInWeeksStorage.absoluteValue)
+                val weekFraction = ((differenceInWeeksStorage.absoluteValue - wholeWeeks) * 10)
+
+                tvWdgCountingNumber?.text = "${wholeWeeks.toInt()}.${weekFraction.roundToInt()}"
+
+                if (differenceInDaysStorage < 0) {
+                    tvWdgCountingText?.text = getString(R.string.app_widget_counting_text_years_ago)
+                } else tvWdgCountingText?.text =
+                    getString(R.string.app_widget_counting_text_years_left)
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
