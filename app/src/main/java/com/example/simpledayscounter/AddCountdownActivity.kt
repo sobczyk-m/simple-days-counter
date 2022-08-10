@@ -37,7 +37,7 @@ class AddCountdownActivity : AppCompatActivity() {
 
     private var selectedDateStorage: String = ""
     private var differenceInDaysStorage: Int = 0
-    private var differenceInWeeksStorage: Int = 0
+    private var differenceInWeeksStorage: Double = 0.0
     private var differenceInMonthsStorage: Int = 0
     private var differenceInYearsStorage: Int = 0
     private var differenceInDaysOfMonthStorage: Int = 0
@@ -196,17 +196,17 @@ class AddCountdownActivity : AppCompatActivity() {
             val sdfSelectedDate = sdf.parse(selectedDate)
             sdfSelectedDate?.let {
                 val selectedDateInDays = sdfSelectedDate.time / (1000 * 60 * 60 * 24)
-                val selectedDateInWeeks = sdfSelectedDate.time / (1000 * 60 * 60 * 24 * 7)
+                val selectedDateInWeeks = selectedDateInDays.toDouble() / 7
 
                 val sdfCurrentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
                 sdfCurrentDate?.let {
                     val currentDateInDays = sdfCurrentDate.time / (1000 * 60 * 60 * 24)
-                    val currentDateInWeeks = sdfCurrentDate.time / (1000 * 60 * 60 * 24 * 7)
+                    val currentDateInWeeks = currentDateInDays.toDouble() / 7
 
                     val differenceInDays = selectedDateInDays - currentDateInDays
                     val differenceInWeeks = selectedDateInWeeks - currentDateInWeeks
                     differenceInDaysStorage = differenceInDays.toInt()
-                    differenceInWeeksStorage = differenceInWeeks.toInt()
+                    differenceInWeeksStorage = differenceInWeeks
                 }
             }
 
