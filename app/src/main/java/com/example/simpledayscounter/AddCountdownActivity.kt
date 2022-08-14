@@ -132,6 +132,7 @@ class AddCountdownActivity : AppCompatActivity() {
                 chbTuesday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
                 chbWednesday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
                 chbThursday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
+                chbFriday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
                 chbSaturday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
                 chbSunday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
 
