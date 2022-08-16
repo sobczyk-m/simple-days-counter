@@ -278,23 +278,23 @@ class AddCountdownActivity : AppCompatActivity() {
         calStart.time = dateStart
         calEnd.time = dateEnd
 
-        var mondaysNumber = 0
-        var tuesdaysNumber = 0
-        var wednesdaysNumber = 0
-        var thursdaysNumber = 0
-        var fridaysNumber = 0
-        var saturdaysNumber = 0
-        var sundaysNumber = 0
+        mondaysNumberStorage = 0
+        tuesdaysNumberStorage = 0
+        wednesdaysNumberStorage = 0
+        thursdaysNumberStorage = 0
+        fridaysNumberStorage = 0
+        saturdaysNumberStorage = 0
+        sundaysNumberStorage = 0
 
         fun addDaysWhen() {
             when {
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.MONDAY -> ++mondaysNumber
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.TUESDAY -> ++tuesdaysNumber
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.WEDNESDAY -> ++wednesdaysNumber
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.THURSDAY -> ++thursdaysNumber
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.FRIDAY -> ++fridaysNumber
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY -> ++saturdaysNumber
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.SUNDAY -> ++sundaysNumber
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.MONDAY -> ++mondaysNumberStorage
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.TUESDAY -> ++tuesdaysNumberStorage
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.WEDNESDAY -> ++wednesdaysNumberStorage
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.THURSDAY -> ++thursdaysNumberStorage
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.FRIDAY -> ++fridaysNumberStorage
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY -> ++saturdaysNumberStorage
+                calStart[Calendar.DAY_OF_WEEK] == Calendar.SUNDAY -> ++sundaysNumberStorage
             }
         }
 
@@ -311,14 +311,6 @@ class AddCountdownActivity : AppCompatActivity() {
                 addDaysWhen()
             }
         }
-
-        mondaysNumberStorage = mondaysNumber
-        tuesdaysNumberStorage = tuesdaysNumber
-        wednesdaysNumberStorage = wednesdaysNumber
-        thursdaysNumberStorage = thursdaysNumber
-        fridaysNumberStorage = fridaysNumber
-        saturdaysNumberStorage = saturdaysNumber
-        sundaysNumberStorage = sundaysNumber
     }
 
     private fun excludeDayOfWeek() {
