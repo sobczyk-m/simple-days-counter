@@ -120,6 +120,14 @@ class AddCountdownActivity : AppCompatActivity() {
         return true
     }
 
+    private fun setCountingText(timeUnit: String) {
+        if (differenceInDaysStorage < 0) {
+            tvWdgCountingText?.text =
+                getString(R.string.app_widget_counting_text_time_ago, timeUnit)
+        } else tvWdgCountingText?.text =
+            getString(R.string.app_widget_counting_text_time_left, timeUnit)
+    }
+
     private fun whichCountingMethodChecked() {
         when {
             rbDays?.isChecked == true -> {
@@ -136,11 +144,7 @@ class AddCountdownActivity : AppCompatActivity() {
                 chbSaturday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
                 chbSunday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
 
-                if (differenceInDaysStorage < 0) {
-                    tvWdgCountingText?.text =
-                        getString(R.string.app_widget_counting_text_time_ago, "Days")
-                } else tvWdgCountingText?.text =
-                    getString(R.string.app_widget_counting_text_time_left, "Days")
+                setCountingText("Days")
             }
             rbWeeks?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -150,11 +154,7 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 tvWdgCountingNumber?.text = "${wholeWeeks.toInt()}.${weekFraction.roundToInt()}"
 
-                if (differenceInDaysStorage < 0) {
-                    tvWdgCountingText?.text =
-                        getString(R.string.app_widget_counting_text_time_ago, "Weeks")
-                } else tvWdgCountingText?.text =
-                    getString(R.string.app_widget_counting_text_time_left, "Weeks")
+                setCountingText("Weeks")
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -206,11 +206,7 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 tvWdgCountingNumber?.text = "${sumOfMonths.absoluteValue}.${monthFraction}"
 
-                if (differenceInDaysStorage < 0) {
-                    tvWdgCountingText?.text =
-                        getString(R.string.app_widget_counting_text_time_ago, "Months")
-                } else tvWdgCountingText?.text =
-                    getString(R.string.app_widget_counting_text_time_left, "Months")
+                setCountingText("Months")
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -219,13 +215,7 @@ class AddCountdownActivity : AppCompatActivity() {
                     ((differenceInMonthsStorage.toDouble() / 12) * 10).roundToInt().absoluteValue
                 tvWdgCountingNumber?.text = "${differenceInYearsStorage}.${yearFraction}"
 
-                if (differenceInDaysStorage < 0) {
-                    tvWdgCountingText?.text =
-                        getString(R.string.app_widget_counting_text_time_ago, "Years")
-                } else {
-                    tvWdgCountingText?.text =
-                        getString(R.string.app_widget_counting_text_time_left, "Years")
-                }
+                setCountingText("Years")
             }
         }
     }
