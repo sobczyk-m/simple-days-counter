@@ -32,13 +32,7 @@
     <string name="app_widget_counting_description">Time left to the event</string>
     <string name="app_widget_event_name">Event Name</string>
     <string name="app_widget_event_name_description">Event Name</string>
-    <string name="app_widget_counting_text_days_left">Days Left</string>
-    <string name="app_widget_counting_text_days_ago">Days Ago</string>
-    <string name="app_widget_counting_text_weeks_left">Weeks Left</string>
-    <string name="app_widget_counting_text_weeks_ago">Weeks Ago</string>
-    <string name="app_widget_counting_text_months_left">Months Left</string>
-    <string name="app_widget_counting_text_months_ago">Months Ago</string>
-    <string name="app_widget_counting_text_years_left">Years Left</string>
-    <string name="app_widget_counting_text_years_ago">Years Ago</string>
+    <string name="app_widget_counting_text_time_left">%1$s Left</string>
+    <string name="app_widget_counting_text_time_ago">%1$s Ago</string>
 
 </resources>
