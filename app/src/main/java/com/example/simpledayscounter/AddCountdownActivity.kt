@@ -134,16 +134,30 @@ class AddCountdownActivity : AppCompatActivity() {
                 llDayExclude?.visibility = View.VISIBLE
 
                 countDaysOfWeek(sdfCurrentDateStorage, sdfSelectedDateStorage)
-                excludeDayOfWeek()
 
-                chbMonday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
-                chbTuesday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
-                chbWednesday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
-                chbThursday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
-                chbFriday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
-                chbSaturday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
-                chbSunday?.setOnCheckedChangeListener { _, _ -> excludeDayOfWeek() }
+                chbMonday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
+                chbTuesday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
+                chbWednesday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
+                chbThursday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
+                chbFriday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
+                chbSaturday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
+                chbSunday?.setOnCheckedChangeListener { _, _ ->
+                    setCountingNumber(excludeDayOfWeek())
+                }
 
+                setCountingNumber(excludeDayOfWeek())
                 setCountingText("Days")
             }
             rbWeeks?.isChecked == true -> {
@@ -151,9 +165,9 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 val wholeWeeks = kotlin.math.floor(differenceInWeeksStorage.absoluteValue)
                 val weekFraction = ((differenceInWeeksStorage.absoluteValue - wholeWeeks) * 10)
+                val numberToDisplay = "${wholeWeeks.toInt()}.${weekFraction.roundToInt()}"
 
-                tvWdgCountingNumber?.text = "${wholeWeeks.toInt()}.${weekFraction.roundToInt()}"
-
+                setCountingNumber(numberToDisplay)
                 setCountingText("Weeks")
             }
             rbMonths?.isChecked == true -> {
@@ -203,9 +217,9 @@ class AddCountdownActivity : AppCompatActivity() {
                     }
                     differenceInDaysOfMonthStorage == 0 -> monthFraction = 0
                 }
+                val numberToDisplay = "${sumOfMonths.absoluteValue}.${monthFraction}"
 
-                tvWdgCountingNumber?.text = "${sumOfMonths.absoluteValue}.${monthFraction}"
-
+                setCountingNumber(numberToDisplay)
                 setCountingText("Months")
             }
             rbYears?.isChecked == true -> {
@@ -213,8 +227,9 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 val yearFraction =
                     ((differenceInMonthsStorage.toDouble() / 12) * 10).roundToInt().absoluteValue
-                tvWdgCountingNumber?.text = "${differenceInYearsStorage}.${yearFraction}"
+                val numberToDisplay = "${differenceInYearsStorage}.${yearFraction}"
 
+                setCountingNumber(numberToDisplay)
                 setCountingText("Years")
             }
         }
@@ -313,17 +328,21 @@ class AddCountdownActivity : AppCompatActivity() {
         }
     }
 
-    private fun excludeDayOfWeek() {
-        var daysToDisplay = differenceInDaysStorage.absoluteValue
+    private fun excludeDayOfWeek(): String {
+        var daysAfterExcluding = differenceInDaysStorage.absoluteValue
 
-        if (chbMonday?.isChecked == false) daysToDisplay -= mondaysNumberStorage
-        if (chbTuesday?.isChecked == false) daysToDisplay -= tuesdaysNumberStorage
-        if (chbWednesday?.isChecked == false) daysToDisplay -= wednesdaysNumberStorage
-        if (chbThursday?.isChecked == false) daysToDisplay -= thursdaysNumberStorage
-        if (chbFriday?.isChecked == false) daysToDisplay -= fridaysNumberStorage
-        if (chbSaturday?.isChecked == false) daysToDisplay -= saturdaysNumberStorage
-        if (chbSunday?.isChecked == false) daysToDisplay -= sundaysNumberStorage
+        if (chbMonday?.isChecked == false) daysAfterExcluding -= mondaysNumberStorage
+        if (chbTuesday?.isChecked == false) daysAfterExcluding -= tuesdaysNumberStorage
+        if (chbWednesday?.isChecked == false) daysAfterExcluding -= wednesdaysNumberStorage
+        if (chbThursday?.isChecked == false) daysAfterExcluding -= thursdaysNumberStorage
+        if (chbFriday?.isChecked == false) daysAfterExcluding -= fridaysNumberStorage
+        if (chbSaturday?.isChecked == false) daysAfterExcluding -= saturdaysNumberStorage
+        if (chbSunday?.isChecked == false) daysAfterExcluding -= sundaysNumberStorage
 
-        tvWdgCountingNumber?.text = daysToDisplay.toString()
+        return daysAfterExcluding.toString()
+    }
+
+    private fun setCountingNumber(number: String) {
+        tvWdgCountingNumber?.text = number
     }
 }
