@@ -1,6 +1,7 @@
 package com.example.simpledayscounter
 
 import android.app.DatePickerDialog
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.view.Menu
@@ -9,6 +10,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import vadiole.colorpicker.ColorModel
+import vadiole.colorpicker.ColorPickerDialog
 import java.text.SimpleDateFormat
 import java.time.LocalDate.now
 import java.time.LocalDate.of
@@ -57,6 +60,15 @@ class AddCountdownActivity : AppCompatActivity() {
     private var saturdaysNumberStorage: Int  = 0
     private var sundaysNumberStorage: Int  = 0
 
+    private var ibColorFirst: ImageButton? = null
+    private var ibColorSecond: ImageButton? = null
+    private var ibColorThird: ImageButton? = null
+
+    private var llWdgContainer: LinearLayout? = null
+    private var wdgStartColor: Int = -3052635
+    private var wdgCenterColor: Int = -7952153
+    private var wdgEndColor: Int = -10486799
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_countdown)
@@ -82,6 +94,11 @@ class AddCountdownActivity : AppCompatActivity() {
         chbSaturday = findViewById(R.id.chbSaturday)
         chbSunday = findViewById(R.id.chbSunday)
 
+        ibColorFirst = findViewById(R.id.ibColorFirst)
+        ibColorSecond = findViewById(R.id.ibColorSecond)
+        ibColorThird = findViewById(R.id.ibColorThird)
+        llWdgContainer = findViewById(R.id.llWdgContainer)
+
         rbDays?.setOnClickListener {
             whichCountingMethodChecked()
         }
@@ -102,6 +119,10 @@ class AddCountdownActivity : AppCompatActivity() {
         etCountdownDate?.setOnClickListener {
             showDatePicker()
         }
+
+        ibColorFirst?.setOnClickListener { showColorPicker(wdgStartColor) }
+        ibColorSecond?.setOnClickListener { showColorPicker(wdgCenterColor) }
+        ibColorThird?.setOnClickListener { showColorPicker(wdgEndColor) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -344,5 +365,69 @@ class AddCountdownActivity : AppCompatActivity() {
 
     private fun setCountingNumber(number: String) {
         tvWdgCountingNumber?.text = number
+    }
+
+    private fun setWdgBackground(backgroundImage: GradientDrawable){
+        llWdgContainer?.background = backgroundImage
+    }
+
+    private fun showColorPicker(initialColor: Int) {
+        val cpd: ColorPickerDialog = ColorPickerDialog.Builder()
+
+            //  set initial (default) color
+            .setInitialColor(initialColor)
+            //  set Color Model. ARGB, RGB or HSV
+            .setColorModel(ColorModel.ARGB)
+            //  set is user be able to switch color model
+            .setColorModelSwitchEnabled(true)
+            //  set your localized string resource for OK button
+            .setButtonOkText(android.R.string.ok)
+            //  set your localized string resource for Cancel button
+            .setButtonCancelText(android.R.string.cancel)
+            //  callback for picked color (required)
+            .onColorSelected { color: Int ->
+                // check which color button pushed and set its new color
+                when (initialColor) {
+                    wdgStartColor -> {
+                        wdgStartColor = color
+                        ibColorFirst?.setBackgroundColor(color)
+                    }
+                    wdgCenterColor -> {
+                        wdgCenterColor = color
+                        ibColorSecond?.setBackgroundColor(color)
+                    }
+                    wdgEndColor -> {
+                        wdgEndColor = color
+                        ibColorThird?.setBackgroundColor(color)
+                    }
+                }
+                // set new colors for GradientDrawable
+                createGradientDrawable(wdgStartColor, wdgCenterColor, wdgEndColor)
+            }
+            //  create dialog
+            .create()
+
+        // show dialog from Activity
+        cpd.show(supportFragmentManager, "color_picker")
+    }
+
+    private fun createGradientDrawable(startColor: Int, centerColor: Int, endColor: Int) {
+        // Scale Float to DP
+        val cornerRadiusToDP = 28 * resources.displayMetrics.scaledDensity
+
+        val gradientDrawable = GradientDrawable()
+        // Set the color array to draw gradient
+        gradientDrawable.colors = intArrayOf(
+            startColor,
+            centerColor,
+            endColor,
+        )
+        gradientDrawable.gradientType = GradientDrawable.LINEAR_GRADIENT
+        gradientDrawable.orientation = GradientDrawable.Orientation.LEFT_RIGHT
+        gradientDrawable.shape = GradientDrawable.RECTANGLE
+        gradientDrawable.cornerRadius = cornerRadiusToDP
+
+        // Set GradientDrawable as background
+        setWdgBackground(gradientDrawable)
     }
 }

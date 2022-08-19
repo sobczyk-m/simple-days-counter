@@ -1,11 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.SimpleDaysCounter.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:theme="@style/Theme.SimpleDaysCounter.AppWidgetContainer">
+    android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llWdgContainer"
+            style="@style/Widget.SimpleDaysCounter.AppWidget.Container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/app_widget_background"
+            android:orientation="horizontal"
+            android:theme="@style/Theme.SimpleDaysCounter.AppWidgetContainer">
 
         <LinearLayout
             android:id="@+id/llTimeCounting"
@@ -52,4 +58,5 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
 
+</LinearLayout>
 </LinearLayout>

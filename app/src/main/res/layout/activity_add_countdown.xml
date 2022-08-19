@@ -37,7 +37,77 @@
                 android:id="@+id/tvColorPick"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="@string/tv_color_pick" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvColorFirst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:text="#1 Color:" />
+
+                <ImageButton
+                    android:id="@+id/ibColorFirst"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="#D16BA5"
+                    android:contentDescription="First color of widget"
+                    android:src="@drawable/ib_color_picker_layer" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvColorSecond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:text="#2 Color:" />
+
+                <ImageButton
+                    android:id="@+id/ibColorSecond"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="#86A8E7"
+                    android:contentDescription="Second color of widget"
+                    android:src="@drawable/ib_color_picker_layer" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvColorThird"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:text="#3 Color:" />
+
+                <ImageButton
+                    android:id="@+id/ibColorThird"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="#5FFBF1"
+                    android:contentDescription="Third color of widget"
+                    android:src="@drawable/ib_color_picker_layer" />
+            </LinearLayout>
             <!-- PLACEHOLDER FOR THEMES-->
             <ImageView
                 android:layout_width="match_parent"
