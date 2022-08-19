@@ -248,7 +248,7 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 val yearFraction =
                     ((differenceInMonthsStorage.toDouble() / 12) * 10).roundToInt().absoluteValue
-                val numberToDisplay = "${differenceInYearsStorage}.${yearFraction}"
+                val numberToDisplay = "${differenceInYearsStorage.absoluteValue}.${yearFraction}"
 
                 setCountingNumber(numberToDisplay)
                 setCountingText("Years")
