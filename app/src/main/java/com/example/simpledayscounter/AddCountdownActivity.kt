@@ -10,6 +10,10 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
+import com.example.simpledayscounter.entities.Counter
+import com.example.simpledayscounter.entities.CounterDao
+import kotlinx.coroutines.launch
 import vadiole.colorpicker.ColorModel
 import vadiole.colorpicker.ColorPickerDialog
 import java.text.SimpleDateFormat
@@ -137,6 +141,23 @@ class AddCountdownActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> this.finish()
+            R.id.miSave -> {
+
+                val dao: CounterDao = CounterDatabase.getInstance(this).counterDao
+
+                val objectToSave: Counter = Counter(
+                    null,
+                    wdgStartColor,
+                    wdgCenterColor,
+                    wdgEndColor,
+                    selectedDateStorage,
+                    tvWdgEventName?.text.toString(),
+                    tvWdgCountingText?.text.toString(),
+                    tvWdgCountingNumber?.text.toString(),
+                )
+
+                lifecycleScope.launch { dao.insertCounter(objectToSave) }
+            }
         }
         return true
     }
@@ -402,7 +423,7 @@ class AddCountdownActivity : AppCompatActivity() {
                     }
                 }
                 // set new colors for GradientDrawable
-                createGradientDrawable(wdgStartColor, wdgCenterColor, wdgEndColor)
+                setWdgBackground(createGradientDrawable(wdgStartColor, wdgCenterColor, wdgEndColor))
             }
             //  create dialog
             .create()
@@ -411,7 +432,11 @@ class AddCountdownActivity : AppCompatActivity() {
         cpd.show(supportFragmentManager, "color_picker")
     }
 
-    private fun createGradientDrawable(startColor: Int, centerColor: Int, endColor: Int) {
+    private fun createGradientDrawable(
+        startColor: Int,
+        centerColor: Int,
+        endColor: Int
+    ): GradientDrawable {
         // Scale Float to DP
         val cornerRadiusToDP = 28 * resources.displayMetrics.scaledDensity
 
@@ -427,7 +452,6 @@ class AddCountdownActivity : AppCompatActivity() {
         gradientDrawable.shape = GradientDrawable.RECTANGLE
         gradientDrawable.cornerRadius = cornerRadiusToDP
 
-        // Set GradientDrawable as background
-        setWdgBackground(gradientDrawable)
+        return gradientDrawable
     }
 }
