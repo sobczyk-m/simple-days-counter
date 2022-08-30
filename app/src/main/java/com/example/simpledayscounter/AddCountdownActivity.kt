@@ -13,6 +13,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.example.simpledayscounter.entities.Counter
 import com.example.simpledayscounter.entities.CounterDao
+import com.example.simpledayscounter.utils.CounterUtils
 import kotlinx.coroutines.launch
 import vadiole.colorpicker.ColorModel
 import vadiole.colorpicker.ColorPickerDialog
@@ -423,35 +424,18 @@ class AddCountdownActivity : AppCompatActivity() {
                     }
                 }
                 // set new colors for GradientDrawable
-                setWdgBackground(createGradientDrawable(wdgStartColor, wdgCenterColor, wdgEndColor))
+                setWdgBackground(
+                    CounterUtils().createGradientDrawable(
+                        wdgStartColor,
+                        wdgCenterColor,
+                        wdgEndColor
+                    )
+                )
             }
             //  create dialog
             .create()
 
         // show dialog from Activity
         cpd.show(supportFragmentManager, "color_picker")
-    }
-
-    private fun createGradientDrawable(
-        startColor: Int,
-        centerColor: Int,
-        endColor: Int
-    ): GradientDrawable {
-        // Scale Float to DP
-        val cornerRadiusToDP = 28 * resources.displayMetrics.scaledDensity
-
-        val gradientDrawable = GradientDrawable()
-        // Set the color array to draw gradient
-        gradientDrawable.colors = intArrayOf(
-            startColor,
-            centerColor,
-            endColor,
-        )
-        gradientDrawable.gradientType = GradientDrawable.LINEAR_GRADIENT
-        gradientDrawable.orientation = GradientDrawable.Orientation.LEFT_RIGHT
-        gradientDrawable.shape = GradientDrawable.RECTANGLE
-        gradientDrawable.cornerRadius = cornerRadiusToDP
-
-        return gradientDrawable
     }
 }

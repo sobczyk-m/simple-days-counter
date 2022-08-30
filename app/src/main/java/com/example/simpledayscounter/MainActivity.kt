@@ -2,7 +2,6 @@ package com.example.simpledayscounter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -14,9 +13,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.simpledayscounter.entities.CounterDao
+import com.example.simpledayscounter.utils.CounterUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -65,30 +64,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun convertIntToDP(numberToConvert: Int): Int {
-        return (numberToConvert * resources.displayMetrics.scaledDensity).toInt()
-    }
-
-    private fun createGradientDrawable(startColor: Int, centerColor: Int, endColor: Int)
-            : GradientDrawable {
-        // Scale Float to DP
-        val cornerRadiusToDP = 28 * resources.displayMetrics.scaledDensity
-
-        val gradientDrawable = GradientDrawable()
-        // Set the color array to draw gradient
-        gradientDrawable.colors = intArrayOf(
-            startColor,
-            centerColor,
-            endColor,
-        )
-        gradientDrawable.gradientType = GradientDrawable.LINEAR_GRADIENT
-        gradientDrawable.orientation = GradientDrawable.Orientation.LEFT_RIGHT
-        gradientDrawable.shape = GradientDrawable.RECTANGLE
-        gradientDrawable.cornerRadius = cornerRadiusToDP
-
-        return gradientDrawable
-    }
-
     private fun inflateCounterView(context: Context) {
         val createCounter: View = LayoutInflater
             .from(context)
@@ -116,16 +91,20 @@ class MainActivity : AppCompatActivity() {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        layoutParams.setMargins(convertIntToDP(5), 0, convertIntToDP(5), convertIntToDP(5))
+        layoutParams.setMargins(
+            CounterUtils().convertIntToDP(5).toInt(),
+            0,
+            CounterUtils().convertIntToDP(5).toInt(),
+            CounterUtils().convertIntToDP(5).toInt()
+        )
         createCounter.layoutParams = layoutParams
 
-        // Set Listener for every inflatedView
         createCounter.findViewById<View>(numberToIncrease).setOnClickListener {
             Toast.makeText(context, "clicked = ${createCounter.id}", Toast.LENGTH_LONG)
                 .show()
         }
 
-        llWdgContainer?.background = createGradientDrawable(
+        llWdgContainer?.background = CounterUtils().createGradientDrawable(
             bgStartColor!![numberToIncrease - 1],
             bgCenterColor!![numberToIncrease - 1],
             bgEndColor!![numberToIncrease - 1]
