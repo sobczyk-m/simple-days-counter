@@ -2,8 +2,17 @@ package com.example.simpledayscounter.utils
 
 import android.content.res.Resources
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.util.*
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 class CounterUtils {
+
+    val differenceInMonths = 123
 
     fun convertIntToDP(intToConvert: Int): Float {
         return intToConvert * Resources.getSystem().displayMetrics.scaledDensity
@@ -26,4 +35,9 @@ class CounterUtils {
 
         return gradientDrawable
     }
+//
+
+
+
+
 }

@@ -14,16 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import com.example.simpledayscounter.entities.Counter
 import com.example.simpledayscounter.entities.CounterDao
 import com.example.simpledayscounter.utils.CounterUtils
+import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.launch
 import vadiole.colorpicker.ColorModel
 import vadiole.colorpicker.ColorPickerDialog
-import java.text.SimpleDateFormat
-import java.time.LocalDate.now
-import java.time.LocalDate.of
-import java.time.Period.between
 import java.util.*
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
 class AddCountdownActivity : AppCompatActivity() {
 
@@ -48,22 +44,21 @@ class AddCountdownActivity : AppCompatActivity() {
     private var chbSaturday: CheckBox? = null
     private var chbSunday: CheckBox? = null
 
-    private var selectedDateStorage: String = ""
-    private var differenceInDaysStorage: Int = 0
-    private var differenceInWeeksStorage: Double = 0.0
-    private var differenceInMonthsStorage: Int = 0
-    private var differenceInYearsStorage: Int = 0
-    private var differenceInDaysOfMonthStorage: Int = 0
+    private var selectedDayOfMonth: Int = 1
+    private var selectedMonth: Int = 0
+    private var selectedYear: Int = 0
+    private var selectedDate: String = ""
 
-    private var sdfSelectedDateStorage: Date = Date(0)
-    private var sdfCurrentDateStorage: Date = Date(0)
-    private var mondaysNumberStorage: Int = 0
-    private var tuesdaysNumberStorage: Int  = 0
-    private var wednesdaysNumberStorage: Int  = 0
-    private var thursdaysNumberStorage: Int  = 0
-    private var fridaysNumberStorage: Int = 0
-    private var saturdaysNumberStorage: Int  = 0
-    private var sundaysNumberStorage: Int  = 0
+    private var differenceInDays: Int = 0
+    private var differenceInDaysOfMonth: Int = 0
+    private var differenceInWeeks: Int = 0
+    private var differenceInWeeksFraction: Int = 0
+    private var differenceInMonths: Int = 0
+    private var differenceInMonthsFraction: Int = 0
+    private var differenceInYears: Int = 0
+    private var differenceInYearsFraction: Int = 0
+
+    private var daysOfWeekRemaining: Array<Int> = arrayOf(0)
 
     private var ibColorFirst: ImageButton? = null
     private var ibColorSecond: ImageButton? = null
@@ -151,7 +146,7 @@ class AddCountdownActivity : AppCompatActivity() {
                     wdgStartColor,
                     wdgCenterColor,
                     wdgEndColor,
-                    selectedDateStorage,
+                    selectedDate,
                     tvWdgEventName?.text.toString(),
                     tvWdgCountingText?.text.toString(),
                     tvWdgCountingNumber?.text.toString(),
@@ -164,7 +159,7 @@ class AddCountdownActivity : AppCompatActivity() {
     }
 
     private fun setCountingText(timeUnit: String) {
-        if (differenceInDaysStorage < 0) {
+        if (differenceInDays < 0) {
             tvWdgCountingText?.text =
                 getString(R.string.app_widget_counting_text_time_ago, timeUnit)
         } else tvWdgCountingText?.text =
@@ -176,39 +171,163 @@ class AddCountdownActivity : AppCompatActivity() {
             rbDays?.isChecked == true -> {
                 llDayExclude?.visibility = View.VISIBLE
 
-                countDaysOfWeek(sdfCurrentDateStorage, sdfSelectedDateStorage)
+                var excludeMonday: Boolean = chbMonday?.isChecked != true
+                var excludeTuesday: Boolean = chbTuesday?.isChecked != true
+                var excludeWednesday: Boolean = chbWednesday?.isChecked != true
+                var excludeThursday: Boolean = chbThursday?.isChecked != true
+                var excludeFriday: Boolean = chbFriday?.isChecked != true
+                var excludeSaturday: Boolean = chbSaturday?.isChecked != true
+                var excludeSunday: Boolean = chbSunday?.isChecked != true
 
                 chbMonday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeMonday = !excludeMonday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
                 chbTuesday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeTuesday = !excludeTuesday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
                 chbWednesday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeWednesday = !excludeWednesday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
                 chbThursday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeThursday = !excludeThursday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
                 chbFriday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeFriday = !excludeFriday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
                 chbSaturday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeSaturday = !excludeSaturday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
                 chbSunday?.setOnCheckedChangeListener { _, _ ->
-                    setCountingNumber(excludeDayOfWeek())
+                    excludeSunday = !excludeSunday
+                    setCountingNumber(
+                        (DateCalculationUtils(
+                            selectedYear, selectedMonth, selectedDayOfMonth
+                        ).excludeDayOfWeek(
+                            differenceInDays,
+                            daysOfWeekRemaining,
+                            excludeMonday,
+                            excludeTuesday,
+                            excludeWednesday,
+                            excludeThursday,
+                            excludeFriday,
+                            excludeSaturday,
+                            excludeSunday
+                        )).toString()
+                    )
                 }
 
-                setCountingNumber(excludeDayOfWeek())
+                val numberToDisplay =
+                    (DateCalculationUtils(
+                        selectedYear, selectedMonth, selectedDayOfMonth
+                    ).excludeDayOfWeek(
+                        differenceInDays,
+                        daysOfWeekRemaining,
+                        excludeMonday,
+                        excludeTuesday,
+                        excludeWednesday,
+                        excludeThursday,
+                        excludeFriday,
+                        excludeSaturday,
+                        excludeSunday
+                    )).toString()
+
+                setCountingNumber(numberToDisplay)
                 setCountingText("Days")
             }
             rbWeeks?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
 
-                val wholeWeeks = kotlin.math.floor(differenceInWeeksStorage.absoluteValue)
-                val weekFraction = ((differenceInWeeksStorage.absoluteValue - wholeWeeks) * 10)
-                val numberToDisplay = "${wholeWeeks.toInt()}.${weekFraction.roundToInt()}"
+                val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
 
                 setCountingNumber(numberToDisplay)
                 setCountingText("Weeks")
@@ -216,51 +335,9 @@ class AddCountdownActivity : AppCompatActivity() {
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
 
-                var monthFraction = 0
-                val sumOfMonths = differenceInMonthsStorage + differenceInYearsStorage * 12
-
-                fun fractionFromTenToNine() {
-                    when (monthFraction) {
-                        10 -> monthFraction = 9
-                    }
-                }
-
-                fun calculateFraction(x: Double) {
-                    val avgOfDaysInMonths = differenceInDaysStorage.toDouble() / sumOfMonths
-                    val avgOfDayInMonth = (differenceInDaysOfMonthStorage / avgOfDaysInMonths)
-
-                    monthFraction = ((x - avgOfDayInMonth) * 10).roundToInt().absoluteValue
-                    fractionFromTenToNine()
-                }
-
-                when {
-                    sumOfMonths > 1 -> {
-                        if (differenceInDaysOfMonthStorage > 0) {
-                            calculateFraction(1.0)
-                        } else if (differenceInDaysOfMonthStorage < 0) {
-                            calculateFraction(0.0)
-                        }
-                    }
-                    sumOfMonths < -1 -> {
-                        if (differenceInDaysOfMonthStorage > 0) {
-                            calculateFraction(0.0)
-                        } else if (differenceInDaysOfMonthStorage < 0) {
-                            calculateFraction(-1.0)
-                        }
-                    }
-                    sumOfMonths == 1 || sumOfMonths == -1 -> {
-                        monthFraction =
-                            ((((differenceInDaysStorage.toDouble() / 31) * 10).absoluteValue) - 10).roundToInt()
-                        fractionFromTenToNine()
-                    }
-                    sumOfMonths == 0 -> {
-                        monthFraction =
-                            ((((differenceInDaysStorage.toDouble() / 31) * 10).absoluteValue).roundToInt())
-                        fractionFromTenToNine()
-                    }
-                    differenceInDaysOfMonthStorage == 0 -> monthFraction = 0
-                }
-                val numberToDisplay = "${sumOfMonths.absoluteValue}.${monthFraction}"
+                val sumOfMonths = differenceInMonths + differenceInYears * 12
+                val numberToDisplay =
+                    "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
 
                 setCountingNumber(numberToDisplay)
                 setCountingText("Months")
@@ -268,9 +345,8 @@ class AddCountdownActivity : AppCompatActivity() {
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
 
-                val yearFraction =
-                    ((differenceInMonthsStorage.toDouble() / 12) * 10).roundToInt().absoluteValue
-                val numberToDisplay = "${differenceInYearsStorage.absoluteValue}.${yearFraction}"
+                val numberToDisplay =
+                    "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
 
                 setCountingNumber(numberToDisplay)
                 setCountingText("Years")
@@ -284,44 +360,50 @@ class AddCountdownActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(this, { _, mYear, mMonth, mDayOfMonth ->
+        val dpd = DatePickerDialog(
+            this, { _, mYear, mMonth, mDayOfMonth ->
 
-            val selectedDate = "$mDayOfMonth/${mMonth + 1}/$mYear"
-            selectedDateStorage = selectedDate
+                selectedDate = "$mDayOfMonth/${mMonth + 1}/$mYear"
 
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-            val sdfSelectedDate = sdf.parse(selectedDate)
-            sdfSelectedDate?.let {
-                sdfSelectedDateStorage = sdfSelectedDate
-                val selectedDateInDays = sdfSelectedDate.time / (1000 * 60 * 60 * 24)
-                val selectedDateInWeeks = selectedDateInDays.toDouble() / 7
+                selectedDayOfMonth = mDayOfMonth
+                selectedMonth = mMonth
+                selectedYear = mYear
 
-                val sdfCurrentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
-                sdfCurrentDate?.let {
-                    sdfCurrentDateStorage = sdfCurrentDate
-                    val currentDateInDays = sdfCurrentDate.time / (1000 * 60 * 60 * 24)
-                    val currentDateInWeeks = currentDateInDays.toDouble() / 7
+                differenceInDays =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInDays()
+                differenceInDaysOfMonth =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInDaysOfMonth()
 
-                    val differenceInDays = selectedDateInDays - currentDateInDays
-                    val differenceInWeeks = selectedDateInWeeks - currentDateInWeeks
-                    differenceInDaysStorage = differenceInDays.toInt()
-                    differenceInWeeksStorage = differenceInWeeks
-                }
-            }
+                differenceInWeeks =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInWeeksInt()
+                differenceInWeeksFraction =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInWeeksFraction()
 
-            val selectedLocaleDate = of(mYear, mMonth + 1, mDayOfMonth)
-            val currentLocaleDate = now()
-            val periodBetween = between(currentLocaleDate, selectedLocaleDate)
+                differenceInMonths =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInMonths()
+                differenceInMonthsFraction =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInMonthsFraction()
 
-            val differenceInMonths = periodBetween.months
-            val differenceInYears = periodBetween.years
-            differenceInMonthsStorage = differenceInMonths
-            differenceInYearsStorage = differenceInYears
-            differenceInDaysOfMonthStorage = (currentLocaleDate.dayOfMonth - mDayOfMonth)
+                differenceInYears =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInYears()
+                differenceInYearsFraction =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).differenceInYearsFraction()
 
-            etCountdownDate?.text = Editable.Factory.getInstance().newEditable(selectedDateStorage)
-            whichCountingMethodChecked()
-        },
+                val sdfSelectedDate =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).sdfSelectedDate
+                val sdfCurrentDate =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).sdfCurrentDate
+
+                daysOfWeekRemaining =
+                    DateCalculationUtils(mYear, mMonth, mDayOfMonth).countDaysOfWeek(
+                        sdfCurrentDate,
+                        sdfSelectedDate
+                    )
+
+                etCountdownDate?.text =
+                    Editable.Factory.getInstance().newEditable(selectedDate)
+                whichCountingMethodChecked()
+            },
             year,
             month,
             dayOfMonth
@@ -329,67 +411,11 @@ class AddCountdownActivity : AppCompatActivity() {
         dpd.show()
     }
 
-    private fun countDaysOfWeek(dateStart: Date, dateEnd: Date) {
-        val calStart = Calendar.getInstance()
-        val calEnd = Calendar.getInstance()
-
-        calStart.time = dateStart
-        calEnd.time = dateEnd
-
-        mondaysNumberStorage = 0
-        tuesdaysNumberStorage = 0
-        wednesdaysNumberStorage = 0
-        thursdaysNumberStorage = 0
-        fridaysNumberStorage = 0
-        saturdaysNumberStorage = 0
-        sundaysNumberStorage = 0
-
-        fun addDaysWhen() {
-            when {
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.MONDAY -> ++mondaysNumberStorage
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.TUESDAY -> ++tuesdaysNumberStorage
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.WEDNESDAY -> ++wednesdaysNumberStorage
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.THURSDAY -> ++thursdaysNumberStorage
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.FRIDAY -> ++fridaysNumberStorage
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY -> ++saturdaysNumberStorage
-                calStart[Calendar.DAY_OF_WEEK] == Calendar.SUNDAY -> ++sundaysNumberStorage
-            }
-        }
-
-        if (calStart.time > calEnd.time) {
-            calStart.time = dateEnd
-            calEnd.time = dateStart
-            while (calStart.time < calEnd.time) {
-                addDaysWhen()
-                calStart.add(Calendar.DAY_OF_MONTH, 1)
-            }
-        } else {
-            while (calStart.time < calEnd.time) {
-                calStart.add(Calendar.DAY_OF_MONTH, 1)
-                addDaysWhen()
-            }
-        }
-    }
-
-    private fun excludeDayOfWeek(): String {
-        var daysAfterExcluding = differenceInDaysStorage.absoluteValue
-
-        if (chbMonday?.isChecked == false) daysAfterExcluding -= mondaysNumberStorage
-        if (chbTuesday?.isChecked == false) daysAfterExcluding -= tuesdaysNumberStorage
-        if (chbWednesday?.isChecked == false) daysAfterExcluding -= wednesdaysNumberStorage
-        if (chbThursday?.isChecked == false) daysAfterExcluding -= thursdaysNumberStorage
-        if (chbFriday?.isChecked == false) daysAfterExcluding -= fridaysNumberStorage
-        if (chbSaturday?.isChecked == false) daysAfterExcluding -= saturdaysNumberStorage
-        if (chbSunday?.isChecked == false) daysAfterExcluding -= sundaysNumberStorage
-
-        return daysAfterExcluding.toString()
-    }
-
     private fun setCountingNumber(number: String) {
         tvWdgCountingNumber?.text = number
     }
 
-    private fun setWdgBackground(backgroundImage: GradientDrawable){
+    private fun setWdgBackground(backgroundImage: GradientDrawable) {
         llWdgContainer?.background = backgroundImage
     }
 
