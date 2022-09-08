@@ -110,7 +110,7 @@ class DateCalculationUtils(mYear: Int, mMonth: Int, private val mDayOfMonth: Int
         return currentLocaleDate.dayOfMonth - mDayOfMonth
     }
 
-    fun countDaysOfWeek(dateStart: Date, dateEnd: Date): Array<Int> {
+    fun countDaysOfWeek(dateStart: Date, dateEnd: Date): List<Int> {
         val calStart = Calendar.getInstance()
         val calEnd = Calendar.getInstance()
 
@@ -151,7 +151,7 @@ class DateCalculationUtils(mYear: Int, mMonth: Int, private val mDayOfMonth: Int
             }
         }
 
-        return arrayOf(
+        return listOf(
             mondaysNumber,
             tuesdaysNumber,
             wednesdaysNumber,
@@ -165,24 +165,24 @@ class DateCalculationUtils(mYear: Int, mMonth: Int, private val mDayOfMonth: Int
     fun excludeDayOfWeek(
         totalDays: Int,
         // Days of week sorted from Monday to Sunday
-        sortedDaysOfWeek: Array<Int>,
-        excludeMonday: Boolean,
-        excludeTuesday: Boolean,
-        excludeWednesday: Boolean,
-        excludeThursday: Boolean,
-        excludeFriday: Boolean,
-        excludeSaturday: Boolean,
-        excludeSunday: Boolean
+        sortedDaysOfWeek: List<Int>,
+        includeMonday: Boolean,
+        includeTuesday: Boolean,
+        includeWednesday: Boolean,
+        includeThursday: Boolean,
+        includeFriday: Boolean,
+        includeSaturday: Boolean,
+        includeSunday: Boolean
     ): Int {
         var daysAfterExcluding = totalDays.absoluteValue
 
-        if (excludeMonday) daysAfterExcluding -= sortedDaysOfWeek[0]
-        if (excludeTuesday) daysAfterExcluding -= sortedDaysOfWeek[1]
-        if (excludeWednesday) daysAfterExcluding -= sortedDaysOfWeek[2]
-        if (excludeThursday) daysAfterExcluding -= sortedDaysOfWeek[3]
-        if (excludeFriday) daysAfterExcluding -= sortedDaysOfWeek[4]
-        if (excludeSaturday) daysAfterExcluding -= sortedDaysOfWeek[5]
-        if (excludeSunday) daysAfterExcluding -= sortedDaysOfWeek[6]
+        if (!includeMonday) daysAfterExcluding -= sortedDaysOfWeek[0]
+        if (!includeTuesday) daysAfterExcluding -= sortedDaysOfWeek[1]
+        if (!includeWednesday) daysAfterExcluding -= sortedDaysOfWeek[2]
+        if (!includeThursday) daysAfterExcluding -= sortedDaysOfWeek[3]
+        if (!includeFriday) daysAfterExcluding -= sortedDaysOfWeek[4]
+        if (!includeSaturday) daysAfterExcluding -= sortedDaysOfWeek[5]
+        if (!includeSunday) daysAfterExcluding -= sortedDaysOfWeek[6]
 
         return daysAfterExcluding
     }

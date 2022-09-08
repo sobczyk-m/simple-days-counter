@@ -122,8 +122,6 @@ class MainActivity : AppCompatActivity() {
                 bgStartColor = dao?.getBgStartColorList()
                 bgCenterColor = dao?.getBgCenterColorList()
                 bgEndColor = dao?.getBgEndColorList()
-                countingTextList = dao?.getCountingTextList()
-                countingNumberList = dao?.getCountingNumberList()
             }
 
             getFromDatabase.join()

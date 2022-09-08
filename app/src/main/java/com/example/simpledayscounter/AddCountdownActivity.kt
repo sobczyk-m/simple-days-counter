@@ -15,6 +15,7 @@ import com.example.simpledayscounter.entities.Counter
 import com.example.simpledayscounter.entities.CounterDao
 import com.example.simpledayscounter.utils.CounterUtils
 import com.example.simpledayscounter.utils.DateCalculationUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import vadiole.colorpicker.ColorModel
 import vadiole.colorpicker.ColorPickerDialog
@@ -58,16 +59,24 @@ class AddCountdownActivity : AppCompatActivity() {
     private var differenceInYears: Int = 0
     private var differenceInYearsFraction: Int = 0
 
-    private var daysOfWeekRemaining: Array<Int> = arrayOf(0)
-
     private var ibColorFirst: ImageButton? = null
     private var ibColorSecond: ImageButton? = null
     private var ibColorThird: ImageButton? = null
-
     private var llWdgContainer: LinearLayout? = null
+
     private var wdgStartColor: Int = -3052635
     private var wdgCenterColor: Int = -7952153
     private var wdgEndColor: Int = -10486799
+
+    private var countingType: CountingType = CountingType.DAYS
+    private var daysOfWeekRemaining: List<Int> = listOf(0)
+    private var includeMonday: Boolean = true
+    private var includeTuesday: Boolean = true
+    private var includeWednesday: Boolean = true
+    private var includeThursday: Boolean = true
+    private var includeFriday: Boolean = true
+    private var includeSaturday: Boolean = true
+    private var includeSunday: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,15 +110,19 @@ class AddCountdownActivity : AppCompatActivity() {
 
         rbDays?.setOnClickListener {
             whichCountingMethodChecked()
+            countingType = CountingType.DAYS
         }
         rbWeeks?.setOnClickListener {
             whichCountingMethodChecked()
+            countingType = CountingType.WEEKS
         }
         rbMonths?.setOnClickListener {
             whichCountingMethodChecked()
+            countingType = CountingType.MONTHS
         }
         rbYears?.setOnClickListener {
             whichCountingMethodChecked()
+            countingType = CountingType.YEARS
         }
 
         etCountdownTitle?.doAfterTextChanged {
@@ -141,18 +154,28 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 val dao: CounterDao = CounterDatabase.getInstance(this).counterDao
 
-                val objectToSave: Counter = Counter(
+                val counterToSave = Counter(
                     null,
+                    tvWdgEventName?.text.toString(),
                     wdgStartColor,
                     wdgCenterColor,
                     wdgEndColor,
-                    selectedDate,
-                    tvWdgEventName?.text.toString(),
-                    tvWdgCountingText?.text.toString(),
-                    tvWdgCountingNumber?.text.toString(),
+                    selectedDayOfMonth,
+                    selectedMonth,
+                    selectedYear,
+                    countingType,
+                    includeMonday,
+                    includeTuesday,
+                    includeWednesday,
+                    includeThursday,
+                    includeFriday,
+                    includeSaturday,
+                    includeSunday
                 )
 
-                lifecycleScope.launch { dao.insertCounter(objectToSave) }
+                lifecycleScope.launch(Dispatchers.IO) {
+                    dao.insertCounter(counterToSave)
+                }
             }
         }
         return true
@@ -171,137 +194,129 @@ class AddCountdownActivity : AppCompatActivity() {
             rbDays?.isChecked == true -> {
                 llDayExclude?.visibility = View.VISIBLE
 
-                var excludeMonday: Boolean = chbMonday?.isChecked != true
-                var excludeTuesday: Boolean = chbTuesday?.isChecked != true
-                var excludeWednesday: Boolean = chbWednesday?.isChecked != true
-                var excludeThursday: Boolean = chbThursday?.isChecked != true
-                var excludeFriday: Boolean = chbFriday?.isChecked != true
-                var excludeSaturday: Boolean = chbSaturday?.isChecked != true
-                var excludeSunday: Boolean = chbSunday?.isChecked != true
-
                 chbMonday?.setOnCheckedChangeListener { _, _ ->
-                    excludeMonday = !excludeMonday
+                    includeMonday = !includeMonday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
                 chbTuesday?.setOnCheckedChangeListener { _, _ ->
-                    excludeTuesday = !excludeTuesday
+                    includeTuesday = !includeTuesday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
                 chbWednesday?.setOnCheckedChangeListener { _, _ ->
-                    excludeWednesday = !excludeWednesday
+                    includeWednesday = !includeWednesday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
                 chbThursday?.setOnCheckedChangeListener { _, _ ->
-                    excludeThursday = !excludeThursday
+                    includeThursday = !includeThursday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
                 chbFriday?.setOnCheckedChangeListener { _, _ ->
-                    excludeFriday = !excludeFriday
+                    includeFriday = !includeFriday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
                 chbSaturday?.setOnCheckedChangeListener { _, _ ->
-                    excludeSaturday = !excludeSaturday
+                    includeSaturday = !includeSaturday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
                 chbSunday?.setOnCheckedChangeListener { _, _ ->
-                    excludeSunday = !excludeSunday
+                    includeSunday = !includeSunday
                     setCountingNumber(
                         (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
                             daysOfWeekRemaining,
-                            excludeMonday,
-                            excludeTuesday,
-                            excludeWednesday,
-                            excludeThursday,
-                            excludeFriday,
-                            excludeSaturday,
-                            excludeSunday
+                            includeMonday,
+                            includeTuesday,
+                            includeWednesday,
+                            includeThursday,
+                            includeFriday,
+                            includeSaturday,
+                            includeSunday
                         )).toString()
                     )
                 }
@@ -312,13 +327,13 @@ class AddCountdownActivity : AppCompatActivity() {
                     ).excludeDayOfWeek(
                         differenceInDays,
                         daysOfWeekRemaining,
-                        excludeMonday,
-                        excludeTuesday,
-                        excludeWednesday,
-                        excludeThursday,
-                        excludeFriday,
-                        excludeSaturday,
-                        excludeSunday
+                        includeMonday,
+                        includeTuesday,
+                        includeWednesday,
+                        includeThursday,
+                        includeFriday,
+                        includeSaturday,
+                        includeSunday
                     )).toString()
 
                 setCountingNumber(numberToDisplay)
