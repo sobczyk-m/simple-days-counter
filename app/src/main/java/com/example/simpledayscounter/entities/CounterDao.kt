@@ -1,8 +1,7 @@
 package com.example.simpledayscounter.entities
-import android.graphics.drawable.GradientDrawable
-import androidx.lifecycle.LiveData
-import androidx.room.*
 
+import androidx.room.*
+import com.example.simpledayscounter.CountingType
 
 @Dao
 interface CounterDao {
@@ -16,36 +15,54 @@ interface CounterDao {
     @Delete
     suspend fun deleteCounter(counter: Counter)
 
-    @Transaction
     @Query("SELECT * FROM counter")
     suspend fun getWholeListFromCounter(): List<Counter>
 
-    @Transaction
-    @Query("SELECT id FROM counter WHERE id = (SELECT MAX(ID) FROM counter)")
+    @Query("SELECT counterId FROM counter WHERE counterId = (SELECT MAX(counterId) FROM counter)")
     suspend fun getLastId(): Int
 
-    @Transaction
     @Query("SELECT eventName FROM counter")
     suspend fun getEventNameList(): List<String>
 
-    @Transaction
-    @Query("SELECT countingText FROM counter")
-    suspend fun getCountingTextList(): List<String>
-
-    @Transaction
-    @Query("SELECT countingNumber FROM counter")
-    suspend fun getCountingNumberList(): List<String>
-
-    @Transaction
     @Query("SELECT bgStartColor FROM counter")
     suspend fun getBgStartColorList(): List<Int>
 
-    @Transaction
     @Query("SELECT bgCenterColor FROM counter")
     suspend fun getBgCenterColorList(): List<Int>
 
-    @Transaction
     @Query("SELECT bgEndColor FROM counter")
     suspend fun getBgEndColorList(): List<Int>
 
+    @Query("SELECT dayOfMonth FROM counter")
+    suspend fun getDayOfMonthList(): List<Int>
+
+    @Query("SELECT month FROM counter")
+    suspend fun getMonthList(): List<Int>
+
+    @Query("SELECT year FROM counter")
+    suspend fun getYearList(): List<Int>
+
+    @Query("SELECT countingType FROM counter")
+    suspend fun getCountingTypeList(): List<CountingType>
+
+    @Query("SELECT includeMonday FROM counter")
+    suspend fun getIncludeMondayList(): List<Int>
+
+    @Query("SELECT includeTuesday FROM counter")
+    suspend fun getIncludeTuesdayList(): List<Int>
+
+    @Query("SELECT includeWednesday FROM counter")
+    suspend fun getIncludeWednesdayList(): List<Int>
+
+    @Query("SELECT includeThursday FROM counter")
+    suspend fun getIncludeThursdayList(): List<Int>
+
+    @Query("SELECT includeFriday FROM counter")
+    suspend fun getIncludeFridayList(): List<Int>
+
+    @Query("SELECT includeSaturday FROM counter")
+    suspend fun getIncludeSaturdayList(): List<Int>
+
+    @Query("SELECT includeSunday FROM counter")
+    suspend fun getIncludeSundayList(): List<Int>
 }

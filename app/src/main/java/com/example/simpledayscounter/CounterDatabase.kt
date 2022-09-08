@@ -28,7 +28,8 @@ abstract class CounterDatabase : RoomDatabase() {
                     context.applicationContext,
                     CounterDatabase::class.java,
                     "counter_db"
-                ).build().also {
+                ).fallbackToDestructiveMigration()
+                    .build().also {
                     INSTANCE = it
                 }
             }
