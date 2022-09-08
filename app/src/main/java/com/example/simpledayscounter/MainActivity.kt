@@ -14,22 +14,36 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.simpledayscounter.entities.CounterDao
 import com.example.simpledayscounter.utils.CounterUtils
+import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 class MainActivity : AppCompatActivity() {
 
     private var llCounterContainer: LinearLayout? = null
 
-    private var numberToIncrease = 1
+    private var referenceNumber = 1
+
     private var idsQuantity: Int? = null
-    private var eventNameList: List<String>? = null
-    private var bgStartColor: List<Int>? = null
-    private var bgCenterColor: List<Int>? = null
-    private var bgEndColor: List<Int>? = null
-    private var countingTextList: List<String>? = null
-    private var countingNumberList: List<String>? = null
-    private var dao: CounterDao? = null
+    private lateinit var eventNameList: List<String>
+
+    private lateinit var bgStartColorList: List<Int>
+    private lateinit var bgCenterColorList: List<Int>
+    private lateinit var bgEndColorList: List<Int>
+
+    private lateinit var dayOfMonthList: List<Int>
+    private lateinit var monthList: List<Int>
+    private lateinit var yearList: List<Int>
+
+    private lateinit var countingTypeList: List<CountingType>
+    private lateinit var includeMondayList: List<Int>
+    private lateinit var includeTuesdayList: List<Int>
+    private lateinit var includeWednesdayList: List<Int>
+    private lateinit var includeThursdayList: List<Int>
+    private lateinit var includeFridayList: List<Int>
+    private lateinit var includeSaturdayList: List<Int>
+    private lateinit var includeSundayList: List<Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +60,6 @@ class MainActivity : AppCompatActivity() {
         fabAddCountdown.setOnClickListener {
             addCountdown()
         }
-
-        dao = CounterDatabase.getInstance(this).counterDao
         createCounterFromDatabase(this)
     }
 
@@ -58,8 +70,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.miSearch -> Toast.makeText(this, "sss", Toast.LENGTH_SHORT).show()
-            R.id.miSettings -> Toast.makeText(this, "sss", Toast.LENGTH_SHORT).show()
+            R.id.miSearch -> Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
+            R.id.miSettings -> Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
         }
         return true
     }
@@ -69,23 +81,100 @@ class MainActivity : AppCompatActivity() {
             .from(context)
             .inflate(R.layout.app_widget, llCounterContainer, false)
 
+        llCounterContainer?.addView(createCounter)
+
         val tvWdgCountingNumber = findViewById<TextView>(R.id.tvWdgCountingNumber)
         val tvWdgCountingText = findViewById<TextView>(R.id.tvWdgCountingText)
         val tvWdgEventName = findViewById<TextView>(R.id.tvWdgEventName)
         val llWdgContainer = findViewById<LinearLayout>(R.id.llWdgContainer)
 
-        llCounterContainer?.addView(createCounter)
+        createCounter.id = referenceNumber
+        tvWdgCountingNumber?.id = referenceNumber
+        tvWdgCountingText?.id = referenceNumber
+        tvWdgEventName?.id = referenceNumber
+        llWdgContainer?.id = referenceNumber
 
-        createCounter.id = numberToIncrease
-        tvWdgCountingNumber?.id = numberToIncrease
-        tvWdgCountingText?.id = numberToIncrease
-        tvWdgEventName?.id = numberToIncrease
-        llWdgContainer?.id = numberToIncrease
+        val countingType = countingTypeList[referenceNumber - 1]
 
-        tvWdgCountingNumber?.text = countingNumberList?.get(numberToIncrease - 1)
-        tvWdgCountingNumber?.text
-        tvWdgCountingText?.text = countingTextList?.get(numberToIncrease - 1)
-        tvWdgEventName?.text = eventNameList?.get(numberToIncrease - 1).toString()
+        val year = yearList[referenceNumber - 1]
+        val month = monthList[referenceNumber - 1]
+        val dayOfMonth = dayOfMonthList[referenceNumber - 1]
+
+        val sdfSelectedDate = DateCalculationUtils(year, month, dayOfMonth).sdfSelectedDate
+        val sdfCurrentDate = DateCalculationUtils(year, month, dayOfMonth).sdfCurrentDate
+
+        val daysOfWeekRemaining = DateCalculationUtils(year, month, dayOfMonth).countDaysOfWeek(
+            sdfCurrentDate, sdfSelectedDate
+        )
+
+        val differenceInDays = DateCalculationUtils(year, month, dayOfMonth).differenceInDays()
+        val differenceInYears = DateCalculationUtils(year, month, dayOfMonth).differenceInYears()
+        val differenceInYearsFraction =
+            DateCalculationUtils(year, month, dayOfMonth).differenceInYearsFraction()
+
+        fun setCountingText(timeUnit: String) {
+            if (differenceInDays < 0) {
+                tvWdgCountingText?.text =
+                    getString(R.string.app_widget_counting_text_time_ago, timeUnit)
+            } else tvWdgCountingText?.text =
+                getString(R.string.app_widget_counting_text_time_left, timeUnit)
+        }
+
+        fun setCountingNumber(number: String) {
+            tvWdgCountingNumber?.text = number
+        }
+
+        when (countingType) {
+            CountingType.DAYS -> {
+                val numberToDisplay =
+                    (DateCalculationUtils(year, month, dayOfMonth)).excludeDayOfWeek(
+                        differenceInDays,
+                        daysOfWeekRemaining,
+                        intToBoolean((includeMondayList[referenceNumber - 1])),
+                        intToBoolean((includeTuesdayList[referenceNumber - 1])),
+                        intToBoolean((includeWednesdayList[referenceNumber - 1])),
+                        intToBoolean((includeThursdayList[referenceNumber - 1])),
+                        intToBoolean((includeFridayList[referenceNumber - 1])),
+                        intToBoolean((includeSaturdayList[referenceNumber - 1])),
+                        intToBoolean((includeSundayList[referenceNumber - 1])),
+                    ).toString()
+
+                setCountingNumber(numberToDisplay)
+                setCountingText("Days")
+            }
+            CountingType.WEEKS -> {
+                val differenceInWeeks =
+                    DateCalculationUtils(year, month, dayOfMonth).differenceInWeeksInt()
+                val differenceInWeeksFraction =
+                    DateCalculationUtils(year, month, dayOfMonth).differenceInWeeksFraction()
+                val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
+
+                setCountingNumber(numberToDisplay)
+                setCountingText("Weeks")
+            }
+            CountingType.MONTHS -> {
+                val differenceInMonths =
+                    DateCalculationUtils(year, month, dayOfMonth).differenceInMonths()
+                val differenceInMonthsFraction =
+                    DateCalculationUtils(year, month, dayOfMonth).differenceInMonthsFraction()
+
+                val sumOfMonths = differenceInMonths + differenceInYears * 12
+                val numberToDisplay =
+                    "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
+
+                setCountingNumber(numberToDisplay)
+                setCountingText("Months")
+            }
+            CountingType.YEARS -> {
+                val numberToDisplay =
+                    "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
+
+                setCountingNumber(numberToDisplay)
+                setCountingText("Years")
+            }
+        }
+
+        tvWdgEventName?.text = eventNameList[referenceNumber - 1]
 
         val layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -99,39 +188,58 @@ class MainActivity : AppCompatActivity() {
         )
         createCounter.layoutParams = layoutParams
 
-        createCounter.findViewById<View>(numberToIncrease).setOnClickListener {
+        createCounter.findViewById<View>(referenceNumber).setOnClickListener {
             Toast.makeText(context, "clicked = ${createCounter.id}", Toast.LENGTH_LONG)
                 .show()
         }
 
         llWdgContainer?.background = CounterUtils().createGradientDrawable(
-            bgStartColor!![numberToIncrease - 1],
-            bgCenterColor!![numberToIncrease - 1],
-            bgEndColor!![numberToIncrease - 1]
+            bgStartColorList[referenceNumber - 1],
+            bgCenterColorList[referenceNumber - 1],
+            bgEndColorList[referenceNumber - 1]
         )
-        ++numberToIncrease
+        ++referenceNumber
     }
 
     private fun createCounterFromDatabase(context: Context) {
+        val dao: CounterDao = CounterDatabase.getInstance(this).counterDao
 
         lifecycleScope.launch {
-
             val getFromDatabase = launch(Dispatchers.IO) {
-                idsQuantity = dao?.getLastId()
-                eventNameList = dao?.getEventNameList()
-                bgStartColor = dao?.getBgStartColorList()
-                bgCenterColor = dao?.getBgCenterColorList()
-                bgEndColor = dao?.getBgEndColorList()
+                idsQuantity = dao.getLastId()
+                if (idsQuantity!! > 0) {
+                    eventNameList = dao.getEventNameList()
+                    bgStartColorList = dao.getBgStartColorList()
+                    bgCenterColorList = dao.getBgCenterColorList()
+                    bgEndColorList = dao.getBgEndColorList()
+                    dayOfMonthList = dao.getDayOfMonthList()
+                    monthList = dao.getMonthList()
+                    yearList = dao.getYearList()
+                    countingTypeList = dao.getCountingTypeList()
+                    includeMondayList = dao.getIncludeMondayList()
+                    includeTuesdayList = dao.getIncludeTuesdayList()
+                    includeWednesdayList = dao.getIncludeWednesdayList()
+                    includeThursdayList = dao.getIncludeThursdayList()
+                    includeFridayList = dao.getIncludeFridayList()
+                    includeSaturdayList = dao.getIncludeSaturdayList()
+                    includeSundayList = dao.getIncludeSundayList()
+                }
             }
-
             getFromDatabase.join()
+
             lifecycleScope.launch(Dispatchers.Main) {
                 if (idsQuantity != null) {
-                    while (numberToIncrease <= idsQuantity!!) {
+                    while (referenceNumber <= idsQuantity!!) {
                         inflateCounterView(context)
                     }
                 }
             }
         }
+    }
+
+    private fun intToBoolean(zeroOrOne: Int): Boolean {
+        if (zeroOrOne == 1) return true
+        if (zeroOrOne == 0) return false
+        else throw Exception("Passed parameter must be 0 or 1")
     }
 }
