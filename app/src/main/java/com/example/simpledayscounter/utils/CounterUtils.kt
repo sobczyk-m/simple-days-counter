@@ -40,8 +40,4 @@ class CounterUtils: AppCompatActivity() {
         } else textView?.text =
             context.getString(R.string.app_widget_counting_text_time_left, timeUnit)
     }
-
-    fun setCountingNumber(textView: TextView?, number: String) {
-        textView?.text = number
-    }
 }

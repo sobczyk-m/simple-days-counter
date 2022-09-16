@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                         intToBoolean((includeSundayList[referenceNumber - 1])),
                     ).toString()
 
-                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                tvWdgCountingNumber.text = numberToDisplay
                 CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Days")
             }
             CountingType.WEEKS -> {
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                     DateCalculationUtils(year, month, dayOfMonth).differenceInWeeksFraction()
                 val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
 
-                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                tvWdgCountingNumber.text = numberToDisplay
                 CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Weeks")
 
             }
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                 val numberToDisplay =
                     "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
 
-                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                tvWdgCountingNumber.text = numberToDisplay
                 CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Months")
 
             }
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                 val numberToDisplay =
                     "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
 
-                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                tvWdgCountingNumber.text = numberToDisplay
                 CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Years")
 
             }
