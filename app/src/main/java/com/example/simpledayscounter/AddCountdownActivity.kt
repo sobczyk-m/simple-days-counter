@@ -200,14 +200,6 @@ class AddCountdownActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setCountingText(timeUnit: String) {
-        if (differenceInDays < 0) {
-            tvWdgCountingText?.text =
-                getString(R.string.app_widget_counting_text_time_ago, timeUnit)
-        } else tvWdgCountingText?.text =
-            getString(R.string.app_widget_counting_text_time_left, timeUnit)
-    }
-
     private fun whichCountingMethodChecked() {
         when {
             rbDays?.isChecked == true -> {
@@ -215,8 +207,9 @@ class AddCountdownActivity : AppCompatActivity() {
 
                 chbMonday?.setOnCheckedChangeListener { _, _ ->
                     includeMonday = !includeMonday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -233,8 +226,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 }
                 chbTuesday?.setOnCheckedChangeListener { _, _ ->
                     includeTuesday = !includeTuesday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -251,8 +245,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 }
                 chbWednesday?.setOnCheckedChangeListener { _, _ ->
                     includeWednesday = !includeWednesday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -269,8 +264,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 }
                 chbThursday?.setOnCheckedChangeListener { _, _ ->
                     includeThursday = !includeThursday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -287,8 +283,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 }
                 chbFriday?.setOnCheckedChangeListener { _, _ ->
                     includeFriday = !includeFriday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -305,8 +302,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 }
                 chbSaturday?.setOnCheckedChangeListener { _, _ ->
                     includeSaturday = !includeSaturday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -323,8 +321,9 @@ class AddCountdownActivity : AppCompatActivity() {
                 }
                 chbSunday?.setOnCheckedChangeListener { _, _ ->
                     includeSunday = !includeSunday
-                    setCountingNumber(
-                        (DateCalculationUtils(
+
+                    CounterUtils().setCountingNumber(
+                        tvWdgCountingNumber, (DateCalculationUtils(
                             selectedYear, selectedMonth, selectedDayOfMonth
                         ).excludeDayOfWeek(
                             differenceInDays,
@@ -355,16 +354,16 @@ class AddCountdownActivity : AppCompatActivity() {
                         includeSunday
                     )).toString()
 
-                setCountingNumber(numberToDisplay)
-                setCountingText("Days")
+                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Days")
             }
             rbWeeks?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
 
                 val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
 
-                setCountingNumber(numberToDisplay)
-                setCountingText("Weeks")
+                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Weeks")
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -373,8 +372,8 @@ class AddCountdownActivity : AppCompatActivity() {
                 val numberToDisplay =
                     "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
 
-                setCountingNumber(numberToDisplay)
-                setCountingText("Months")
+                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Months")
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -382,8 +381,8 @@ class AddCountdownActivity : AppCompatActivity() {
                 val numberToDisplay =
                     "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
 
-                setCountingNumber(numberToDisplay)
-                setCountingText("Years")
+                CounterUtils().setCountingNumber(tvWdgCountingNumber, numberToDisplay)
+                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Years")
             }
         }
     }
@@ -443,10 +442,6 @@ class AddCountdownActivity : AppCompatActivity() {
             dayOfMonth
         )
         dpd.show()
-    }
-
-    private fun setCountingNumber(number: String) {
-        tvWdgCountingNumber?.text = number
     }
 
     private fun setWdgBackground(backgroundImage: GradientDrawable) {
