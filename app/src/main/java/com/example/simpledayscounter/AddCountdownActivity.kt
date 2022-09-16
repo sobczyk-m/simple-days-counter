@@ -1,6 +1,8 @@
 package com.example.simpledayscounter
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -149,32 +151,49 @@ class AddCountdownActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> this.finish()
+            android.R.id.home -> {
+                AlertDialog.Builder(this)
+                    .setTitle("Delete entry")
+                    .setMessage("Are you sure you want to delete this entry?")
+                    .setPositiveButton(android.R.string.ok) { _, _ -> this.finish() }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            }
             R.id.miSave -> {
+                if (selectedDate == "") {
+                    AlertDialog.Builder(this)
+                        .setTitle("Save entry")
+                        .setMessage("Choose the date of your event to proceed")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                    val colorRed = Color.RED
+                    etCountdownDate?.setHintTextColor(colorRed)
+                } else {
+                    val dao: CounterDao = CounterDatabase.getInstance(this).counterDao
 
-                val dao: CounterDao = CounterDatabase.getInstance(this).counterDao
+                    val counterToSave = Counter(
+                        null,
+                        tvWdgEventName?.text.toString(),
+                        wdgStartColor,
+                        wdgCenterColor,
+                        wdgEndColor,
+                        selectedDayOfMonth,
+                        selectedMonth,
+                        selectedYear,
+                        countingType,
+                        includeMonday,
+                        includeTuesday,
+                        includeWednesday,
+                        includeThursday,
+                        includeFriday,
+                        includeSaturday,
+                        includeSunday
+                    )
 
-                val counterToSave = Counter(
-                    null,
-                    tvWdgEventName?.text.toString(),
-                    wdgStartColor,
-                    wdgCenterColor,
-                    wdgEndColor,
-                    selectedDayOfMonth,
-                    selectedMonth,
-                    selectedYear,
-                    countingType,
-                    includeMonday,
-                    includeTuesday,
-                    includeWednesday,
-                    includeThursday,
-                    includeFriday,
-                    includeSaturday,
-                    includeSunday
-                )
-
-                lifecycleScope.launch(Dispatchers.IO) {
-                    dao.insertCounter(counterToSave)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        dao.insertCounter(counterToSave)
+                    }
+                    this.finish()
                 }
             }
         }
