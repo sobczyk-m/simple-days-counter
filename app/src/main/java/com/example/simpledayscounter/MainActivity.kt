@@ -63,6 +63,11 @@ class MainActivity : AppCompatActivity() {
         createCounterFromDatabase(this)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        createCounterFromDatabase(this)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_activity_top_app_bar_menu, menu)
         return true
