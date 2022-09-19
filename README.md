@@ -20,6 +20,10 @@ You can also customize the color of your event counter background using availabl
 
 Last but not least, give the event counter a unique name.
 
+## Preview:
+
+<a href="url"><img src="https://user-images.githubusercontent.com/72651652/190982212-88767cfc-811f-4645-94d1-06ca56e0779b.gif" height="585" width="270"></a>
+
 ## Requirements
 
 - Android 5.0+ ([API 21](https://developer.android.com/studio/releases/platforms#5.0))
