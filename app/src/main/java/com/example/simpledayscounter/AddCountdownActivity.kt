@@ -348,7 +348,8 @@ class AddCountdownActivity : AppCompatActivity() {
                     )).toString()
 
                 tvWdgCountingNumber?.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Days")
+                tvWdgCountingText?.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Days")
             }
             rbWeeks?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -356,7 +357,8 @@ class AddCountdownActivity : AppCompatActivity() {
                 val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
 
                 tvWdgCountingNumber?.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Weeks")
+                tvWdgCountingText?.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Weeks")
             }
             rbMonths?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -366,7 +368,8 @@ class AddCountdownActivity : AppCompatActivity() {
                     "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
 
                 tvWdgCountingNumber?.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Months")
+                tvWdgCountingText?.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Months")
             }
             rbYears?.isChecked == true -> {
                 llDayExclude?.visibility = View.GONE
@@ -375,7 +378,8 @@ class AddCountdownActivity : AppCompatActivity() {
                     "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
 
                 tvWdgCountingNumber?.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Years")
+                tvWdgCountingText?.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Years")
             }
         }
     }

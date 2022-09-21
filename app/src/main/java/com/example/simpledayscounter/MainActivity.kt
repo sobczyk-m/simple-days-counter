@@ -133,7 +133,8 @@ class MainActivity : AppCompatActivity() {
                     ).toString()
 
                 tvWdgCountingNumber.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Days")
+                tvWdgCountingText.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Days")
             }
             CountingType.WEEKS -> {
                 val differenceInWeeks =
@@ -143,7 +144,8 @@ class MainActivity : AppCompatActivity() {
                 val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
 
                 tvWdgCountingNumber.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Weeks")
+                tvWdgCountingText.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Weeks")
 
             }
             CountingType.MONTHS -> {
@@ -157,7 +159,8 @@ class MainActivity : AppCompatActivity() {
                     "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
 
                 tvWdgCountingNumber.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Months")
+                tvWdgCountingText.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Months")
 
             }
             CountingType.YEARS -> {
@@ -165,7 +168,8 @@ class MainActivity : AppCompatActivity() {
                     "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
 
                 tvWdgCountingNumber.text = numberToDisplay
-                CounterUtils().setCountingText(this, tvWdgCountingText, differenceInDays, "Years")
+                tvWdgCountingText.text =
+                    CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Years")
 
             }
         }
