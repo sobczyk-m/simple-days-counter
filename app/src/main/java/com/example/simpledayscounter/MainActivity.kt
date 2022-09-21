@@ -2,16 +2,16 @@ package com.example.simpledayscounter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.simpledayscounter.entities.CounterDao
 import com.example.simpledayscounter.utils.CounterUtils
 import com.example.simpledayscounter.utils.DateCalculationUtils
@@ -20,8 +20,6 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 class MainActivity : AppCompatActivity() {
-
-    private var llCounterContainer: LinearLayout? = null
 
     private var referenceNumber = 1
 
@@ -45,11 +43,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var includeSaturdayList: List<Int>
     private lateinit var includeSundayList: List<Int>
 
+    private var rvCounter: RecyclerView? = null
+    private var counterDisplayList = mutableListOf<CounterDisplay>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        llCounterContainer = findViewById(R.id.llCounterContainer)
+        rvCounter = findViewById(R.id.rvCounter)
 
         fun addCountdown() {
             val intent = Intent(this, AddCountdownActivity::class.java)
@@ -82,22 +83,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inflateCounterView(context: Context) {
-        val createCounter: View = LayoutInflater
-            .from(context)
-            .inflate(R.layout.app_widget, llCounterContainer, false)
 
-        llCounterContainer?.addView(createCounter)
-
-        val tvWdgCountingNumber = findViewById<TextView>(R.id.tvWdgCountingNumber)
-        val tvWdgCountingText = findViewById<TextView>(R.id.tvWdgCountingText)
-        val tvWdgEventName = findViewById<TextView>(R.id.tvWdgEventName)
-        val llWdgContainer = findViewById<LinearLayout>(R.id.llWdgContainer)
-
-        createCounter.id = referenceNumber
-        tvWdgCountingNumber?.id = referenceNumber
-        tvWdgCountingText?.id = referenceNumber
-        tvWdgEventName?.id = referenceNumber
-        llWdgContainer?.id = referenceNumber
+        val eventNameToDisplay: String = eventNameList[referenceNumber - 1]
+        lateinit var countingNumberToDisplay: String
+        lateinit var countingTextToDisplay: String
 
         val countingType = countingTypeList[referenceNumber - 1]
 
@@ -119,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
         when (countingType) {
             CountingType.DAYS -> {
-                val numberToDisplay =
+                countingNumberToDisplay =
                     (DateCalculationUtils(year, month, dayOfMonth)).excludeDayOfWeek(
                         differenceInDays,
                         daysOfWeekRemaining,
@@ -132,8 +121,7 @@ class MainActivity : AppCompatActivity() {
                         intToBoolean((includeSundayList[referenceNumber - 1])),
                     ).toString()
 
-                tvWdgCountingNumber.text = numberToDisplay
-                tvWdgCountingText.text =
+                countingTextToDisplay =
                     CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Days")
             }
             CountingType.WEEKS -> {
@@ -141,12 +129,10 @@ class MainActivity : AppCompatActivity() {
                     DateCalculationUtils(year, month, dayOfMonth).differenceInWeeksInt()
                 val differenceInWeeksFraction =
                     DateCalculationUtils(year, month, dayOfMonth).differenceInWeeksFraction()
-                val numberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
 
-                tvWdgCountingNumber.text = numberToDisplay
-                tvWdgCountingText.text =
+                countingNumberToDisplay = "$differenceInWeeks.$differenceInWeeksFraction"
+                countingTextToDisplay =
                     CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Weeks")
-
             }
             CountingType.MONTHS -> {
                 val differenceInMonths =
@@ -155,49 +141,38 @@ class MainActivity : AppCompatActivity() {
                     DateCalculationUtils(year, month, dayOfMonth).differenceInMonthsFraction()
 
                 val sumOfMonths = differenceInMonths + differenceInYears * 12
-                val numberToDisplay =
+
+                countingNumberToDisplay =
                     "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
-
-                tvWdgCountingNumber.text = numberToDisplay
-                tvWdgCountingText.text =
+                countingTextToDisplay =
                     CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Months")
-
             }
             CountingType.YEARS -> {
-                val numberToDisplay =
+
+                countingNumberToDisplay =
                     "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
-
-                tvWdgCountingNumber.text = numberToDisplay
-                tvWdgCountingText.text =
+                countingTextToDisplay =
                     CounterUtils().getPastOrFutureCountingText(this, differenceInDays, "Years")
-
             }
         }
 
-        tvWdgEventName?.text = eventNameList[referenceNumber - 1]
-
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        layoutParams.setMargins(
-            CounterUtils().convertIntToDP(5).toInt(),
-            0,
-            CounterUtils().convertIntToDP(5).toInt(),
-            CounterUtils().convertIntToDP(5).toInt()
-        )
-        createCounter.layoutParams = layoutParams
-
-        createCounter.findViewById<View>(referenceNumber).setOnClickListener {
-            Toast.makeText(context, "clicked = ${createCounter.id}", Toast.LENGTH_LONG)
-                .show()
-        }
-
-        llWdgContainer?.background = CounterUtils().createGradientDrawable(
+        val backgroundToDisplay: GradientDrawable = CounterUtils().createGradientDrawable(
             bgStartColorList[referenceNumber - 1],
             bgCenterColorList[referenceNumber - 1],
             bgEndColorList[referenceNumber - 1]
         )
+
+        val counterToDisplay = (CounterDisplay(
+            eventNameToDisplay, countingNumberToDisplay, countingTextToDisplay,
+            backgroundToDisplay
+        ))
+
+        val adapter = CounterDisplayAdapter(counterDisplayList)
+        rvCounter?.adapter = adapter
+        rvCounter?.layoutManager = LinearLayoutManager(context)
+        counterDisplayList.add(counterToDisplay)
+        adapter.notifyItemInserted(counterDisplayList.size - 1)
+
         ++referenceNumber
     }
 
