@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.simpledayscounter"
-        minSdk 21
-        targetSdk 32
+        minSdk 26
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -35,6 +35,7 @@ android {
         viewBinding true
     }
     namespace 'com.example.simpledayscounter'
+    buildToolsVersion '33.0.1'
 }
 
 dependencies {
