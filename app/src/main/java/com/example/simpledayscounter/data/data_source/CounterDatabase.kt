@@ -1,11 +1,10 @@
-package com.example.simpledayscounter
+package com.example.simpledayscounter.data.data_source
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.simpledayscounter.entities.Counter
-import com.example.simpledayscounter.entities.CounterDao
+import com.example.simpledayscounter.data.model.Counter
 
 @Database(
     entities = [

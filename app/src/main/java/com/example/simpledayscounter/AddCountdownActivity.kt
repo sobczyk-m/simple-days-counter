@@ -13,8 +13,10 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
-import com.example.simpledayscounter.entities.Counter
-import com.example.simpledayscounter.entities.CounterDao
+import com.example.simpledayscounter.data.model.Counter
+import com.example.simpledayscounter.data.data_source.CounterDao
+import com.example.simpledayscounter.data.data_source.CounterDatabase
+import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.utils.CounterUtils
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.Dispatchers

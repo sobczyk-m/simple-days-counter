@@ -1,6 +1,6 @@
-package com.example.simpledayscounter.entities
+package com.example.simpledayscounter.data.model
 import androidx.room.*
-import com.example.simpledayscounter.CountingType
+import com.example.simpledayscounter.data.enumeration.CountingType
 
 @Entity
 data class Counter(

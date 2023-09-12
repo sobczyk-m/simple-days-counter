@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simpledayscounter.entities.CounterDao
+import com.example.simpledayscounter.data.data_source.CounterDao
+import com.example.simpledayscounter.data.data_source.CounterDatabase
+import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.utils.CounterUtils
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.Dispatchers
