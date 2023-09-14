@@ -1,6 +1,5 @@
 package com.example.simpledayscounter.ui
 
-import com.example.simpledayscounter.data.enumeration.CountingDirection
 import com.example.simpledayscounter.data.enumeration.CountingType
 
 data class CounterUiState(

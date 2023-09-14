@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.simpledayscounter.CounterApplication
-import com.example.simpledayscounter.data.enumeration.CountingDirection
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
 import com.example.simpledayscounter.data.repository.CounterRepository
