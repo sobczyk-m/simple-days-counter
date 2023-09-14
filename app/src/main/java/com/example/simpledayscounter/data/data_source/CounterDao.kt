@@ -3,6 +3,7 @@ package com.example.simpledayscounter.data.data_source
 import androidx.room.*
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CounterDao {
@@ -17,7 +18,7 @@ interface CounterDao {
     suspend fun deleteCounter(counter: Counter)
 
     @Query("SELECT * FROM counter")
-    suspend fun getWholeListFromCounter(): List<Counter>
+    fun getWholeListFromCounter(): Flow<List<Counter>>
 
     @Query("SELECT counterId FROM counter WHERE counterId = (SELECT MAX(counterId) FROM counter)")
     suspend fun getLastId(): Int
@@ -44,7 +45,7 @@ interface CounterDao {
     suspend fun getYearList(): List<Int>
 
     @Query("SELECT countingType FROM counter")
-    suspend fun getCountingTypeList(): List<CountingType>
+    suspend fun getCountingType(): CountingType
 
     @Query("SELECT includeMonday FROM counter")
     suspend fun getIncludeMondayList(): List<Int>

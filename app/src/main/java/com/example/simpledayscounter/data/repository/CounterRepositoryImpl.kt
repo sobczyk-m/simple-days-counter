@@ -3,6 +3,7 @@ package com.example.simpledayscounter.data.repository
 import com.example.simpledayscounter.data.data_source.CounterDao
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
+import kotlinx.coroutines.flow.Flow
 
 class CounterRepositoryImpl(
     private val dao: CounterDao
@@ -19,7 +20,7 @@ class CounterRepositoryImpl(
         dao.deleteCounter(counter)
     }
 
-    override suspend fun getWholeListFromCounter(): List<Counter> {
+    override fun getWholeListFromCounter(): Flow<List<Counter>> {
         return dao.getWholeListFromCounter()
     }
 
@@ -55,8 +56,8 @@ class CounterRepositoryImpl(
         return dao.getMonthList()
     }
 
-    override suspend fun getCountingTypeList(): List<CountingType> {
-        return dao.getCountingTypeList()
+    override suspend fun getCountingType(): CountingType {
+        return dao.getCountingType()
     }
 
     override suspend fun getIncludeMondayList(): List<Int> {

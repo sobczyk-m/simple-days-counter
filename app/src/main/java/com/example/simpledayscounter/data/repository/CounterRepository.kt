@@ -2,6 +2,7 @@ package com.example.simpledayscounter.data.repository
 
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
+import kotlinx.coroutines.flow.Flow
 
 interface CounterRepository {
 
@@ -11,7 +12,7 @@ interface CounterRepository {
 
     suspend fun deleteCounter(counter: Counter)
 
-    suspend fun getWholeListFromCounter(): List<Counter>
+    fun getWholeListFromCounter(): Flow<List<Counter>>
 
     suspend fun getLastId(): Int
 
@@ -29,7 +30,7 @@ interface CounterRepository {
 
     suspend fun getYearList(): List<Int>
 
-    suspend fun getCountingTypeList(): List<CountingType>
+    suspend fun getCountingType(): CountingType
 
     suspend fun getIncludeMondayList(): List<Int>
 
