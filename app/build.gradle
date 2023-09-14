@@ -31,7 +31,10 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled = true // // Java 8+ API desugaring support
+        // Java 8+ API desugaring support
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_20
     }
     kotlin {
         jvmToolchain(20)
