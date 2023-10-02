@@ -7,9 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.simpledayscounter.CounterApplication
 import com.example.simpledayscounter.data.enumeration.CountingType
-import com.example.simpledayscounter.data.model.Counter
 import com.example.simpledayscounter.data.repository.CounterRepository
-import com.example.simpledayscounter.ui.CounterUiState
 import com.example.simpledayscounter.ui.CountingDirection
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,20 +24,22 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
         CounterCreationUiState(
             counterId = null,
             eventName = "",
+            countingNumber = "0",
             bgStartColor = -3052635,
             bgCenterColor = -7952153,
             bgEndColor = -10486799,
-            dayOfMonth = LocalDate.now().dayOfMonth,
-            month = LocalDate.now().monthValue,
-            year = LocalDate.now().year,
             countingType = CountingType.DAYS,
+            countingDirection = CountingDirection.FUTURE,
+            dayOfMonth = 0,
+            month = 0,
+            year = 0,
             includeMonday = true,
             includeTuesday = true,
             includeWednesday = true,
             includeThursday = true,
             includeFriday = true,
             includeSaturday = true,
-            includeSunday = true,
+            includeSunday = true
         )
     )
 
@@ -56,8 +56,8 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
     }
 
     fun changeEventName(name: String) {
-       _CounterCreationUiState.value = _CounterCreationUiState.value
-        .copy(eventName = name)
+        _CounterCreationUiState.value = _CounterCreationUiState.value
+            .copy(eventName = name)
     }
 
     fun toggleDayOfWeek(dayOfWeek: DaysOfWeek) {
@@ -99,5 +99,108 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
             CountingType.YEARS -> _CounterCreationUiState.value = _CounterCreationUiState.value
                 .copy(countingType = CountingType.YEARS)
         }
+    }
+
+    fun handleDatePick(
+        selectedDay: Int = LocalDate.now().dayOfMonth,
+        selectedMonth: Int = LocalDate.now().monthValue,
+        selectedYear: Int = LocalDate.now().year
+    ) {
+        var countingNumber: String
+        var countingDirection: CountingDirection
+
+        val sdfSelectedDate =
+            DateCalculationUtils(selectedYear, selectedMonth, selectedDay).sdfSelectedDate
+        val sdfCurrentDate =
+            DateCalculationUtils(selectedYear, selectedMonth, selectedDay).sdfCurrentDate
+
+        val daysOfWeekRemaining =
+            DateCalculationUtils(selectedYear, selectedMonth, selectedDay).countDaysOfWeek(
+                sdfCurrentDate, sdfSelectedDate
+            )
+
+        val differenceInDays =
+            DateCalculationUtils(selectedYear, selectedMonth, selectedDay).differenceInDays()
+        val differenceInYears =
+            DateCalculationUtils(selectedYear, selectedMonth, selectedDay).differenceInYears()
+        val differenceInYearsFraction =
+            DateCalculationUtils(
+                selectedYear,
+                selectedMonth,
+                selectedDay
+            ).differenceInYearsFraction()
+
+        when (counterState.value.countingType) {
+            CountingType.DAYS -> {
+                countingNumber =
+                    (DateCalculationUtils(
+                        selectedYear,
+                        selectedMonth,
+                        selectedDay
+                    )).excludeDayOfWeek(
+                        differenceInDays,
+                        daysOfWeekRemaining,
+                        counterState.value.includeMonday,
+                        counterState.value.includeTuesday,
+                        counterState.value.includeWednesday,
+                        counterState.value.includeThursday,
+                        counterState.value.includeFriday,
+                        counterState.value.includeSaturday,
+                        counterState.value.includeSunday
+                    ).toString()
+            }
+
+            CountingType.WEEKS -> {
+                val differenceInWeeks =
+                    DateCalculationUtils(
+                        selectedYear,
+                        selectedMonth,
+                        selectedDay
+                    ).differenceInWeeksInt()
+                val differenceInWeeksFraction =
+                    DateCalculationUtils(
+                        selectedYear,
+                        selectedMonth,
+                        selectedDay
+                    ).differenceInWeeksFraction()
+
+                countingNumber = "$differenceInWeeks.$differenceInWeeksFraction"
+            }
+
+            CountingType.MONTHS -> {
+                val differenceInMonths =
+                    DateCalculationUtils(
+                        selectedYear,
+                        selectedMonth,
+                        selectedDay
+                    ).differenceInMonths()
+                val differenceInMonthsFraction =
+                    DateCalculationUtils(
+                        selectedYear,
+                        selectedMonth,
+                        selectedDay
+                    ).differenceInMonthsFraction()
+                val sumOfMonths = differenceInMonths + differenceInYears * 12
+
+                countingNumber =
+                    "${sumOfMonths.absoluteValue}.${differenceInMonthsFraction}"
+            }
+
+            CountingType.YEARS -> {
+                countingNumber =
+                    "${differenceInYears.absoluteValue}.${differenceInYearsFraction}"
+            }
+        }
+
+        countingDirection =
+            if (differenceInDays < 0) CountingDirection.PAST else CountingDirection.FUTURE
+
+        _CounterCreationUiState.value = _CounterCreationUiState.value.copy(
+            dayOfMonth = selectedDay,
+            month = selectedMonth,
+            year = selectedYear,
+            countingNumber = countingNumber,
+            countingDirection = countingDirection
+        )
     }
 }

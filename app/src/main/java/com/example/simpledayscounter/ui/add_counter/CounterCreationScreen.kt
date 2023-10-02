@@ -1,6 +1,7 @@
 package com.example.simpledayscounter.ui.add_counter
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +16,25 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +45,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.simpledayscounter.R
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.ui.Counter
+import com.example.simpledayscounter.ui.CountingDirection
+import kotlinx.coroutines.launch
+import java.util.Calendar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CounterCreationScreen(
     modifier: Modifier = Modifier,
@@ -38,7 +57,9 @@ fun CounterCreationScreen(
 ) {
     val counterState = viewModel.counterState.collectAsState().value
     val scrollState = rememberScrollState()
-
+    var showDatePicker by remember {
+        mutableStateOf(false)
+    }
     Column(
         modifier = modifier
             .padding(10.dp)
@@ -49,7 +70,11 @@ fun CounterCreationScreen(
             Counter(
                 modifier = Modifier.weight(8f),
                 eventName = if (counterState.eventName.isEmpty())
-                    stringResource(id = R.string.app_widget_event_name) else counterState.eventName
+                    stringResource(id = R.string.app_widget_event_name) else counterState.eventName,
+                countingNumber = when (counterState.countingDirection) {
+                    CountingDirection.PAST -> "-${counterState.countingNumber}"
+                    CountingDirection.FUTURE -> counterState.countingNumber
+                }
             )
             Spacer(modifier = Modifier.weight(1f))
         }
@@ -99,19 +124,83 @@ fun CounterCreationScreen(
                 .padding(0.dp, 0.dp, 0.dp, 10.dp),
             placeholder = { Text(text = stringResource(id = R.string.et_countdown_title)) },
             value = counterState.eventName,
+            colors = TextFieldDefaults.colors(disabledPlaceholderColor = Color.Black),
             onValueChange = { viewModel.changeEventName(it) }
         )
         Text(
             modifier = Modifier
-                .padding(0.dp, 0.dp, 0.dp, 10.dp),
+                .padding(0.dp, 0.dp, 0.dp, 10.dp)
+                .clickable { showDatePicker = !showDatePicker },
             text = stringResource(id = R.string.tv_countdown_date)
         )
         TextField(
             modifier = Modifier
-                .padding(0.dp, 0.dp, 0.dp, 10.dp),
-            placeholder = { Text(text = stringResource(id = R.string.tv_countdown_date)) },
-            value = stringResource(id = R.string.tv_countdown_date),
-            onValueChange = {/*TODO*/ })
+                .padding(0.dp, 0.dp, 0.dp, 10.dp)
+                .clickable { showDatePicker = !showDatePicker },
+            placeholder = { Text(text = stringResource(id = R.string.et_select_event_date)) },
+            enabled = false,
+            value = if (counterState.dayOfMonth == 0) "" else "${counterState.dayOfMonth}/${counterState.month}/${counterState.year}",
+            onValueChange = {},
+            colors = TextFieldDefaults.colors(
+                disabledPlaceholderColor = Color.Black,
+                disabledTextColor = Color.Black
+            )
+        )
+
+        if (showDatePicker) {
+            val snackState = remember { SnackbarHostState() }
+            val dpdScope = rememberCoroutineScope()
+            SnackbarHost(hostState = snackState, Modifier)
+            val openDialog = remember { mutableStateOf(true) }
+            if (openDialog.value) {
+                val datePickerState = rememberDatePickerState()
+                val confirmEnabled = derivedStateOf { datePickerState.selectedDateMillis != null }
+                DatePickerDialog(
+                    onDismissRequest = {
+                        // Dismiss the dialog when the user clicks outside the dialog or on the back button.
+                        openDialog.value = false
+                    },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                openDialog.value = false
+                                dpdScope.launch {
+                                    val selectedTimeStamp: Long =
+                                        datePickerState.selectedDateMillis!!
+                                    val cal = Calendar.getInstance()
+                                    cal.timeInMillis = selectedTimeStamp
+
+                                    val selectedDay = cal[Calendar.DAY_OF_MONTH]
+                                    val selectedMonth = cal[Calendar.MONTH]
+                                    val selectedYear = cal[Calendar.YEAR]
+
+                                    viewModel.handleDatePick(
+                                        selectedDay,
+                                        selectedMonth,
+                                        selectedYear
+                                    )
+                                }
+                            },
+                            enabled = confirmEnabled.value
+                        ) {
+                            Text("OK")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                openDialog.value = false
+                            }
+                        ) {
+                            Text("Cancel")
+                        }
+                    }
+                ) {
+                    DatePicker(state = datePickerState)
+                }
+            }
+        }
+
         Text(
             modifier = Modifier
                 .padding(0.dp, 0.dp, 0.dp, 10.dp),
