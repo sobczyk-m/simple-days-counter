@@ -74,6 +74,17 @@ fun CounterCreationScreen(
                 countingNumber = when (counterState.countingDirection) {
                     CountingDirection.PAST -> "-${counterState.countingNumber}"
                     CountingDirection.FUTURE -> counterState.countingNumber
+                },
+                countingText = when (counterState.countingDirection) {
+                    CountingDirection.PAST -> stringResource(
+                        id = R.string.app_widget_counting_text_time_ago,
+                        stringResource(id = getCountingTypeResource(counterState.countingType))
+                    )
+
+                    CountingDirection.FUTURE -> stringResource(
+                        id = R.string.app_widget_counting_text_time_left,
+                        stringResource(id = getCountingTypeResource(counterState.countingType))
+                    )
                 }
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -260,12 +271,7 @@ fun CounterCreationScreen(
                 })
                 Text(
                     text = stringResource(
-                        id = when (countingOption) {
-                            CountingType.DAYS -> R.string.rb_days
-                            CountingType.WEEKS -> R.string.rb_weeks
-                            CountingType.MONTHS -> R.string.rb_months
-                            CountingType.YEARS -> R.string.rb_years
-                        }
+                        id = getCountingTypeResource(countingOption)
                     )
                 )
             }
@@ -326,4 +332,14 @@ fun CounterCreationScreen(
 @Composable
 fun CounterCreationScreenPreview() {
     CounterCreationScreen()
+}
+
+
+private fun getCountingTypeResource(countingType: CountingType): Int {
+    return when (countingType) {
+        CountingType.DAYS -> R.string.rb_days
+        CountingType.WEEKS -> R.string.rb_weeks
+        CountingType.MONTHS -> R.string.rb_months
+        CountingType.YEARS -> R.string.rb_years
+    }
 }
