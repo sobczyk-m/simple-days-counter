@@ -19,7 +19,7 @@
     <string name="tv_countdown_date">DATE:</string>
     <string name="et_event_date">Select event date</string>
     <string name="et_select_event_date">Select event date</string>
-    <string name="tv_counting_method">CHOSE COUNTING :</string>
+    <string name="tv_counting_method">CHOOSE COUNTING:</string>
     <string name="tv_day_exclude">WHICH DAYS TO COUNT?</string>
     <string name="tv_theme_pick">PICK A THEME</string>
     <string name="tv_color_pick">#%1$d Color:</string>
