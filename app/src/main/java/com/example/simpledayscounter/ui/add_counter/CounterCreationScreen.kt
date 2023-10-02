@@ -234,38 +234,42 @@ fun CounterCreationScreen(
                     when (countingOption) {
                         CountingType.DAYS -> {
                             viewModel.changeCountingType(CountingType.DAYS)
-                            viewModel.handleDatePick(
-                                counterState.dayOfMonth,
-                                counterState.month,
-                                counterState.year
-                            )
+                            if (counterState.dayOfMonth != 0)
+                                viewModel.handleDatePick(
+                                    counterState.dayOfMonth,
+                                    counterState.month,
+                                    counterState.year
+                                )
                         }
 
                         CountingType.WEEKS -> {
                             viewModel.changeCountingType(CountingType.WEEKS)
-                            viewModel.handleDatePick(
-                                counterState.dayOfMonth,
-                                counterState.month,
-                                counterState.year
-                            )
+                            if (counterState.dayOfMonth != 0)
+                                viewModel.handleDatePick(
+                                    counterState.dayOfMonth,
+                                    counterState.month,
+                                    counterState.year
+                                )
                         }
 
                         CountingType.MONTHS -> {
                             viewModel.changeCountingType(CountingType.MONTHS)
-                            viewModel.handleDatePick(
-                                counterState.dayOfMonth,
-                                counterState.month,
-                                counterState.year
-                            )
+                            if (counterState.dayOfMonth != 0)
+                                viewModel.handleDatePick(
+                                    counterState.dayOfMonth,
+                                    counterState.month,
+                                    counterState.year
+                                )
                         }
 
                         CountingType.YEARS -> {
                             viewModel.changeCountingType(CountingType.YEARS)
-                            viewModel.handleDatePick(
-                                counterState.dayOfMonth,
-                                counterState.month,
-                                counterState.year
-                            )
+                            if (counterState.dayOfMonth != 0)
+                                viewModel.handleDatePick(
+                                    counterState.dayOfMonth,
+                                    counterState.month,
+                                    counterState.year
+                                )
                         }
                     }
                 })
