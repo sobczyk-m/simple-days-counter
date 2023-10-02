@@ -13,7 +13,6 @@ import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.LocalDate
 import kotlin.math.absoluteValue
 
 private const val TAG = "CounterCreationViewModel"
@@ -102,9 +101,9 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
     }
 
     fun handleDatePick(
-        selectedDay: Int = LocalDate.now().dayOfMonth,
-        selectedMonth: Int = LocalDate.now().monthValue,
-        selectedYear: Int = LocalDate.now().year
+        selectedDay: Int,
+        selectedMonth: Int,
+        selectedYear: Int
     ) {
         var countingNumber: String
         var countingDirection: CountingDirection
