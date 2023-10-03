@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Simple Days Counter</string>
+    <string name="creation">Create Counter</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_save">Save</string>
     <string name="btn_settings_title">Settings</string>
     <string name="btn_search_title">search</string>
     <string name="btn_search_description">Search button</string>
     <string name="btn_settings_description">Open settings button</string>
-    <string name="fab_add_Countdown">Add event to countdown</string>
+    <string name="fab_add_counter">Add counter</string>
 
     <string name="first_day_of_week">Monday</string>
     <string name="second_day_of_week">Tuesday</string>
@@ -27,7 +30,6 @@
     <string name="rb_weeks">Weeks</string>
     <string name="rb_months">Months</string>
     <string name="rb_years">Years</string>
-    <string name="ic_save">Save</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Choose your countdown event</string>
     <string name="app_widget_counting_number">0</string>

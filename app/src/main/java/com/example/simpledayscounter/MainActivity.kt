@@ -1,38 +1,14 @@
 package com.example.simpledayscounter
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.simpledayscounter.data.data_source.CounterDao
-import com.example.simpledayscounter.data.data_source.CounterDatabase
-import com.example.simpledayscounter.data.enumeration.CountingType
-import com.example.simpledayscounter.ui.HomeScreen
-import com.example.simpledayscounter.utils.CounterUtils
-import com.example.simpledayscounter.utils.DateCalculationUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HomeScreen()
+            SimpleDaysCounterApp()
         }
     }
 }
