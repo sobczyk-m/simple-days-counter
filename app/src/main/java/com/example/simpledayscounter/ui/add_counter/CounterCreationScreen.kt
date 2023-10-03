@@ -304,13 +304,75 @@ fun CounterCreationScreen(
                     },
                         onCheckedChange = {
                             when (index) {
-                                0 -> viewModel.toggleDayOfWeek(DaysOfWeek.Monday)
-                                1 -> viewModel.toggleDayOfWeek(DaysOfWeek.Tuesday)
-                                2 -> viewModel.toggleDayOfWeek(DaysOfWeek.Wednesday)
-                                3 -> viewModel.toggleDayOfWeek(DaysOfWeek.Thursday)
-                                4 -> viewModel.toggleDayOfWeek(DaysOfWeek.Friday)
-                                5 -> viewModel.toggleDayOfWeek(DaysOfWeek.Saturday)
-                                6 -> viewModel.toggleDayOfWeek(DaysOfWeek.Sunday)
+                                0 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Monday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
+
+                                1 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Tuesday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
+
+                                2 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Wednesday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
+
+                                3 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Thursday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
+
+                                4 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Friday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
+
+                                5 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Saturday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
+
+                                6 -> {
+                                    viewModel.toggleDayOfWeek(DaysOfWeek.Sunday)
+                                    if (counterState.dayOfMonth != 0)
+                                        viewModel.handleDatePick(
+                                            counterState.dayOfMonth,
+                                            counterState.month,
+                                            counterState.year
+                                        )
+                                }
                             }
                         })
                     Text(
