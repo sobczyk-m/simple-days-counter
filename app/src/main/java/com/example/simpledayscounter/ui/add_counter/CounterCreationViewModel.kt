@@ -3,16 +3,19 @@ package com.example.simpledayscounter.ui.add_counter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.simpledayscounter.CounterApplication
 import com.example.simpledayscounter.data.enumeration.CountingType
+import com.example.simpledayscounter.data.model.Counter
 import com.example.simpledayscounter.data.repository.CounterRepository
 import com.example.simpledayscounter.ui.CountingDirection
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 private const val TAG = "CounterCreationViewModel"
@@ -232,5 +235,35 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
             countingNumber = countingNumber,
             countingDirection = countingDirection
         )
+    }
+
+    fun saveCounter() {
+        if (_CounterCreationUiState.value.dayOfMonth != 0
+            && _CounterCreationUiState.value.month != 0
+            && _CounterCreationUiState.value.year != 0
+        ) {
+            val counterToSave = Counter(
+                counterId = _CounterCreationUiState.value.counterId,
+                eventName = _CounterCreationUiState.value.eventName,
+                bgStartColor = _CounterCreationUiState.value.bgStartColor,
+                bgCenterColor = _CounterCreationUiState.value.bgCenterColor,
+                bgEndColor = _CounterCreationUiState.value.bgEndColor,
+                dayOfMonth = _CounterCreationUiState.value.dayOfMonth,
+                month = _CounterCreationUiState.value.month,
+                year = _CounterCreationUiState.value.year,
+                countingType = _CounterCreationUiState.value.countingType,
+                includeMonday = _CounterCreationUiState.value.includeMonday,
+                includeTuesday = _CounterCreationUiState.value.includeTuesday,
+                includeWednesday = _CounterCreationUiState.value.includeWednesday,
+                includeThursday = _CounterCreationUiState.value.includeThursday,
+                includeFriday = _CounterCreationUiState.value.includeFriday,
+                includeSaturday = _CounterCreationUiState.value.includeSaturday,
+                includeSunday = _CounterCreationUiState.value.includeSunday
+            )
+
+            viewModelScope.launch() {
+                counterRepository.insertCounter(counterToSave)
+            }
+        }
     }
 }

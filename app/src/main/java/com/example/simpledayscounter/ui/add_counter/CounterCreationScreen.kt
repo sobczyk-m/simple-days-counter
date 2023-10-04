@@ -109,7 +109,10 @@ fun CounterCreationScreen(
                         if (showColorPicker) {
                             showColorPicker = false
                         } else {
-
+                            if (counterState.dayOfMonth != 0) {
+                                viewModel.saveCounter()
+                                navController.navigateUp()
+                            }
                         }
                     }) {
                         Icon(
@@ -213,8 +216,7 @@ fun CounterCreationScreen(
                 )
                 Text(
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 0.dp, 10.dp)
-                        .clickable { showDatePicker = !showDatePicker },
+                        .padding(0.dp, 0.dp, 0.dp, 10.dp),
                     text = stringResource(id = R.string.tv_countdown_date)
                 )
                 TextField(
