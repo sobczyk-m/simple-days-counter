@@ -356,114 +356,116 @@ fun CounterCreationScreen(
                         )
                     }
                 }
-                Text(
-                    modifier = Modifier
-                        .padding(0.dp, 0.dp, 0.dp, 10.dp),
-                    text = stringResource(id = R.string.tv_day_exclude)
-                )
-                Column(modifier = Modifier) {
-                    DaysOfWeek.values().forEachIndexed { index, dayOfWeek ->
-                        Row(
-                            modifier = modifier,
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(checked = when (index) {
-                                0 -> counterState.includeMonday
-                                1 -> counterState.includeTuesday
-                                2 -> counterState.includeWednesday
-                                3 -> counterState.includeThursday
-                                4 -> counterState.includeFriday
-                                5 -> counterState.includeSaturday
-                                6 -> counterState.includeSunday
-                                else -> false
-                            },
-                                onCheckedChange = {
-                                    when (index) {
-                                        0 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Monday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
-                                        }
+                if (counterState.countingType == CountingType.DAYS) {
+                    Text(
+                        modifier = Modifier
+                            .padding(0.dp, 0.dp, 0.dp, 10.dp),
+                        text = stringResource(id = R.string.tv_day_exclude)
+                    )
+                    Column(modifier = Modifier) {
+                        DaysOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                            Row(
+                                modifier = modifier,
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(checked = when (index) {
+                                    0 -> counterState.includeMonday
+                                    1 -> counterState.includeTuesday
+                                    2 -> counterState.includeWednesday
+                                    3 -> counterState.includeThursday
+                                    4 -> counterState.includeFriday
+                                    5 -> counterState.includeSaturday
+                                    6 -> counterState.includeSunday
+                                    else -> false
+                                },
+                                    onCheckedChange = {
+                                        when (index) {
+                                            0 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Monday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
 
-                                        1 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Tuesday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
-                                        }
+                                            1 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Tuesday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
 
-                                        2 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Wednesday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
-                                        }
+                                            2 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Wednesday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
 
-                                        3 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Thursday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
-                                        }
+                                            3 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Thursday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
 
-                                        4 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Friday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
-                                        }
+                                            4 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Friday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
 
-                                        5 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Saturday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
-                                        }
+                                            5 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Saturday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
 
-                                        6 -> {
-                                            viewModel.toggleDayOfWeek(DaysOfWeek.Sunday)
-                                            if (counterState.dayOfMonth != 0)
-                                                viewModel.handleDatePick(
-                                                    counterState.dayOfMonth,
-                                                    counterState.month,
-                                                    counterState.year
-                                                )
+                                            6 -> {
+                                                viewModel.toggleDayOfWeek(DaysOfWeek.Sunday)
+                                                if (counterState.dayOfMonth != 0)
+                                                    viewModel.handleDatePick(
+                                                        counterState.dayOfMonth,
+                                                        counterState.month,
+                                                        counterState.year
+                                                    )
+                                            }
                                         }
-                                    }
-                                })
-                            Text(
-                                text = stringResource(
-                                    id = when (dayOfWeek) {
-                                        DaysOfWeek.Monday -> R.string.first_day_of_week
-                                        DaysOfWeek.Tuesday -> R.string.second_day_of_week
-                                        DaysOfWeek.Wednesday -> R.string.third_day_of_week
-                                        DaysOfWeek.Thursday -> R.string.fourth_day_of_week
-                                        DaysOfWeek.Friday -> R.string.fifth_day_of_week
-                                        DaysOfWeek.Saturday -> R.string.sixth_day_of_week
-                                        DaysOfWeek.Sunday -> R.string.seventh_day_of_week
-                                    }
+                                    })
+                                Text(
+                                    text = stringResource(
+                                        id = when (dayOfWeek) {
+                                            DaysOfWeek.Monday -> R.string.first_day_of_week
+                                            DaysOfWeek.Tuesday -> R.string.second_day_of_week
+                                            DaysOfWeek.Wednesday -> R.string.third_day_of_week
+                                            DaysOfWeek.Thursday -> R.string.fourth_day_of_week
+                                            DaysOfWeek.Friday -> R.string.fifth_day_of_week
+                                            DaysOfWeek.Saturday -> R.string.sixth_day_of_week
+                                            DaysOfWeek.Sunday -> R.string.seventh_day_of_week
+                                        }
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
