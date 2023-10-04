@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.AlphaTile
@@ -26,7 +27,8 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 @Composable
 fun ColorPicker(
-    onColorChange: (Color) -> Unit
+    startColor: Color,
+    onColorChange: (Int) -> Unit,
 ) {
     val controller = rememberColorPickerController()
     Column(
@@ -39,9 +41,10 @@ fun ColorPicker(
                 .fillMaxWidth()
                 .height(450.dp)
                 .padding(10.dp),
+            initialColor = startColor,
             controller = controller,
             onColorChanged = {
-                onColorChange(controller.selectedColor.value)
+                onColorChange(controller.selectedColor.value.toArgb())
             }
         )
         AlphaSlider(

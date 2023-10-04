@@ -12,8 +12,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,20 +39,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.simpledayscounter.R
+import com.example.simpledayscounter.SimpleDaysCounterScreen
 import com.example.simpledayscounter.data.enumeration.CountingType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    navController: NavController,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
-    CountersList(
-        counterList = homeUiState.counterList,
-        modifier = modifier
-    )
+
+    Scaffold(modifier = modifier,
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.secondary,
+                ),
+                title = {
+                    Text(stringResource(id = R.string.app_name))
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick =
+            { navController.navigate(route = SimpleDaysCounterScreen.Creation.name) }
+            ) {
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = stringResource(id = R.string.fab_add_counter)
+                )
+            }
+        }
+    ) { innerPadding ->
+        CountersList(
+            counterList = homeUiState.counterList,
+            modifier = modifier.padding(innerPadding)
+        )
+    }
 }
 
 @Composable
@@ -149,7 +185,7 @@ fun Counter(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+//    HomeScreen(x)
 }
 
 @Preview(showBackground = true)

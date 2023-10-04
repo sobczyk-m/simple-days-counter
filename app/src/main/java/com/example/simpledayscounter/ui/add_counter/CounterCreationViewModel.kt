@@ -59,6 +59,37 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
             .copy(eventName = name)
     }
 
+    enum class Colors {
+        StartColor, MiddleColor, EndColor
+    }
+
+    fun changeCounterColor(color: Colors, picked: Int = 0) {
+        when (color) {
+            Colors.StartColor -> _CounterCreationUiState.value =
+                _CounterCreationUiState.value.copy(bgStartColor = picked)
+
+            Colors.MiddleColor -> _CounterCreationUiState.value =
+                _CounterCreationUiState.value.copy(bgCenterColor = picked)
+
+            Colors.EndColor -> _CounterCreationUiState.value =
+                _CounterCreationUiState.value.copy(bgEndColor = picked)
+        }
+    }
+
+    fun changeCounterColor(colorToChange: CounterColor, color: Int = 0) {
+        when (colorToChange) {
+            CounterColor.StartColor -> _CounterCreationUiState.value =
+                _CounterCreationUiState.value.copy(bgStartColor = color)
+
+            CounterColor.CenterColor -> _CounterCreationUiState.value =
+                _CounterCreationUiState.value.copy(bgCenterColor = color)
+
+            CounterColor.EndColor -> _CounterCreationUiState.value =
+                _CounterCreationUiState.value.copy(bgEndColor = color)
+        }
+
+    }
+
     fun toggleDayOfWeek(dayOfWeek: DaysOfWeek) {
         when (dayOfWeek) {
             DaysOfWeek.Monday -> _CounterCreationUiState.value = _CounterCreationUiState.value
