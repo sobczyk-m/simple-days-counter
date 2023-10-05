@@ -23,9 +23,7 @@ Last but not least, give the event counter a unique name.
 
 ## Preview:
 
-<a href="url"><img src="https://user-images.githubusercontent.com/72651652/190982212-88767cfc-811f-4645-94d1-06ca56e0779b.gif" height="585" width="270"></a>
-![Counters List Screen](app_preview_1.png)
-![Counter Creation Screen](img_preview_2.png)
+<img alt="Counters List Screen" height="585" src="app_preview_1.png" width="270"/>  <img alt="Counter Creation Screen" height="585" src="app_preview_2.png" width="270"/>
 
 ## Requirements
 
