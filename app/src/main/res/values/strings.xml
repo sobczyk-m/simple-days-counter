@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Simple Days Counter</string>
     <string name="creation">Create Counter</string>
+    <string name="choose_color">Choose Color</string>
     <string name="btn_back">Back</string>
     <string name="btn_save">Save</string>
     <string name="btn_settings_title">Settings</string>
