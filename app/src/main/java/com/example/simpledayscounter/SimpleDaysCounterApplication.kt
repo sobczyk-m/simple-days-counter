@@ -4,7 +4,7 @@ import android.app.Application
 import com.example.simpledayscounter.data.AppContainer
 import com.example.simpledayscounter.data.AppDataContainer
 
-class CounterApplication : Application() {
+class SimpleDaysCounterApplication : Application() {
 
     lateinit var container: AppContainer
 

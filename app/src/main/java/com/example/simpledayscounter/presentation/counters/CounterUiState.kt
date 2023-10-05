@@ -1,6 +1,7 @@
-package com.example.simpledayscounter.ui
+package com.example.simpledayscounter.presentation.counters
 
 import com.example.simpledayscounter.data.enumeration.CountingType
+import com.example.simpledayscounter.presentation.counters.constants.CountingDirection
 
 data class CounterUiState(
     val counterId: Int?,

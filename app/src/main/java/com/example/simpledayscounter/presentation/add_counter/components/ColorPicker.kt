@@ -1,4 +1,4 @@
-package com.example.simpledayscounter.ui.add_counter
+package com.example.simpledayscounter.presentation.add_counter.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.AlphaTile
@@ -85,4 +86,10 @@ fun ColorPicker(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ColorPickerPreview() {
+    ColorPicker(startColor = Color(-3052635), { _ -> {} })
 }

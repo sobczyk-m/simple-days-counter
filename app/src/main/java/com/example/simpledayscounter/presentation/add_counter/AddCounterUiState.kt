@@ -1,9 +1,9 @@
-package com.example.simpledayscounter.ui.add_counter
+package com.example.simpledayscounter.presentation.add_counter
 
 import com.example.simpledayscounter.data.enumeration.CountingType
-import com.example.simpledayscounter.ui.CountingDirection
+import com.example.simpledayscounter.presentation.counters.constants.CountingDirection
 
-data class CounterCreationUiState(
+data class AddCounterUiState(
     val counterId: Int?,
     val eventName: String,
     val countingNumber: String,

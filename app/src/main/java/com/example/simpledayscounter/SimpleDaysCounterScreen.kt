@@ -7,12 +7,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.simpledayscounter.ui.HomeScreen
-import com.example.simpledayscounter.ui.add_counter.CounterCreationScreen
+import com.example.simpledayscounter.presentation.counters.CountersScreen
+import com.example.simpledayscounter.presentation.add_counter.AddCounterScreen
 
 enum class SimpleDaysCounterScreen(@StringRes val title: Int) {
-    Start(title = R.string.app_name),
-    Creation(title = R.string.creation),
+    Counters(title = R.string.app_name),
+    AddCounter(title = R.string.add_counter),
 }
 
 @Composable
@@ -21,14 +21,14 @@ fun SimpleDaysCounterApp(
 ) {
     NavHost(
         navController = navController,
-        startDestination = SimpleDaysCounterScreen.Start.name,
+        startDestination = SimpleDaysCounterScreen.Counters.name,
         modifier = Modifier,
     ) {
-        composable(route = SimpleDaysCounterScreen.Start.name) {
-            HomeScreen(navController = navController)
+        composable(route = SimpleDaysCounterScreen.Counters.name) {
+            CountersScreen(navController = navController)
         }
-        composable(route = SimpleDaysCounterScreen.Creation.name) {
-            CounterCreationScreen(navController = navController)
+        composable(route = SimpleDaysCounterScreen.AddCounter.name) {
+            AddCounterScreen(navController = navController)
         }
     }
 }

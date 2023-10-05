@@ -1,4 +1,4 @@
-package com.example.simpledayscounter.ui
+package com.example.simpledayscounter.presentation.counters
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.simpledayscounter.CounterApplication
+import com.example.simpledayscounter.SimpleDaysCounterApplication
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
 import com.example.simpledayscounter.data.repository.CounterRepository
+import com.example.simpledayscounter.presentation.counters.constants.CountingDirection
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,10 +21,10 @@ import kotlin.math.absoluteValue
 
 private const val TAG = "HomeViewModel"
 
-class HomeViewModel(private val counterRepository: CounterRepository) : ViewModel() {
+class CountersViewModel(private val counterRepository: CounterRepository) : ViewModel() {
 
-    private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
-    val homeUiState: StateFlow<HomeUiState> = _homeUiState
+    private val _countersUiState: MutableStateFlow<CountersUiState> = MutableStateFlow(CountersUiState())
+    val countersUiState: StateFlow<CountersUiState> = _countersUiState
 
     init {
         createCountersFromDatabase()
@@ -32,9 +33,9 @@ class HomeViewModel(private val counterRepository: CounterRepository) : ViewMode
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as CounterApplication)
+                val application = (this[APPLICATION_KEY] as SimpleDaysCounterApplication)
                 val counterRepository = application.container.counterRepository
-                HomeViewModel(counterRepository = counterRepository)
+                CountersViewModel(counterRepository = counterRepository)
             }
         }
     }
@@ -46,7 +47,7 @@ class HomeViewModel(private val counterRepository: CounterRepository) : ViewMode
                 .catch { exception -> exception.message?.let { Log.e(TAG, it) } }
                 .collect { counters ->
                     val counterUiList = counters.map { counter -> mapCounters(counter) }
-                    _homeUiState.value = HomeUiState(counterUiList)
+                    _countersUiState.value = CountersUiState(counterUiList)
                 }
         }
     }
@@ -149,4 +150,4 @@ class HomeViewModel(private val counterRepository: CounterRepository) : ViewMode
     }
 }
 
-data class HomeUiState(val counterList: List<CounterUiState> = listOf())
+data class CountersUiState(val counterList: List<CounterUiState> = listOf())

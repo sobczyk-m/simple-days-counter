@@ -1,4 +1,4 @@
-package com.example.simpledayscounter.ui.add_counter
+package com.example.simpledayscounter.presentation.add_counter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.simpledayscounter.CounterApplication
+import com.example.simpledayscounter.SimpleDaysCounterApplication
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
 import com.example.simpledayscounter.data.repository.CounterRepository
-import com.example.simpledayscounter.ui.CountingDirection
+import com.example.simpledayscounter.presentation.add_counter.constants.CounterColor
+import com.example.simpledayscounter.presentation.add_counter.constants.DaysOfWeek
+import com.example.simpledayscounter.presentation.counters.constants.CountingDirection
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,10 +22,10 @@ import kotlin.math.absoluteValue
 
 private const val TAG = "CounterCreationViewModel"
 
-class CounterCreationViewModel(private val counterRepository: CounterRepository) : ViewModel() {
+class AddCounterViewModel(private val counterRepository: CounterRepository) : ViewModel() {
 
-    private val _CounterCreationUiState = MutableStateFlow(
-        CounterCreationUiState(
+    private val _AddCounterUiState = MutableStateFlow(
+        AddCounterUiState(
             counterId = null,
             eventName = "",
             countingNumber = "0",
@@ -45,20 +47,20 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
         )
     )
 
-    val counterState: StateFlow<CounterCreationUiState> = _CounterCreationUiState.asStateFlow()
+    val addCounterState: StateFlow<AddCounterUiState> = _AddCounterUiState.asStateFlow()
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as CounterApplication)
+                val application = (this[APPLICATION_KEY] as SimpleDaysCounterApplication)
                 val counterRepository = application.container.counterRepository
-                CounterCreationViewModel(counterRepository = counterRepository)
+                AddCounterViewModel(counterRepository = counterRepository)
             }
         }
     }
 
     fun changeEventName(name: String) {
-        _CounterCreationUiState.value = _CounterCreationUiState.value
+        _AddCounterUiState.value = _AddCounterUiState.value
             .copy(eventName = name)
     }
 
@@ -68,68 +70,68 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
 
     fun changeCounterColor(color: Colors, picked: Int = 0) {
         when (color) {
-            Colors.StartColor -> _CounterCreationUiState.value =
-                _CounterCreationUiState.value.copy(bgStartColor = picked)
+            Colors.StartColor -> _AddCounterUiState.value =
+                _AddCounterUiState.value.copy(bgStartColor = picked)
 
-            Colors.MiddleColor -> _CounterCreationUiState.value =
-                _CounterCreationUiState.value.copy(bgCenterColor = picked)
+            Colors.MiddleColor -> _AddCounterUiState.value =
+                _AddCounterUiState.value.copy(bgCenterColor = picked)
 
-            Colors.EndColor -> _CounterCreationUiState.value =
-                _CounterCreationUiState.value.copy(bgEndColor = picked)
+            Colors.EndColor -> _AddCounterUiState.value =
+                _AddCounterUiState.value.copy(bgEndColor = picked)
         }
     }
 
     fun changeCounterColor(colorToChange: CounterColor, color: Int = 0) {
         when (colorToChange) {
-            CounterColor.StartColor -> _CounterCreationUiState.value =
-                _CounterCreationUiState.value.copy(bgStartColor = color)
+            CounterColor.StartColor -> _AddCounterUiState.value =
+                _AddCounterUiState.value.copy(bgStartColor = color)
 
-            CounterColor.CenterColor -> _CounterCreationUiState.value =
-                _CounterCreationUiState.value.copy(bgCenterColor = color)
+            CounterColor.CenterColor -> _AddCounterUiState.value =
+                _AddCounterUiState.value.copy(bgCenterColor = color)
 
-            CounterColor.EndColor -> _CounterCreationUiState.value =
-                _CounterCreationUiState.value.copy(bgEndColor = color)
+            CounterColor.EndColor -> _AddCounterUiState.value =
+                _AddCounterUiState.value.copy(bgEndColor = color)
         }
 
     }
 
     fun toggleDayOfWeek(dayOfWeek: DaysOfWeek) {
         when (dayOfWeek) {
-            DaysOfWeek.Monday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeMonday = !_CounterCreationUiState.value.includeMonday)
+            DaysOfWeek.Monday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeMonday = !_AddCounterUiState.value.includeMonday)
 
-            DaysOfWeek.Tuesday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeTuesday = !_CounterCreationUiState.value.includeTuesday)
+            DaysOfWeek.Tuesday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeTuesday = !_AddCounterUiState.value.includeTuesday)
 
-            DaysOfWeek.Wednesday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeWednesday = !_CounterCreationUiState.value.includeWednesday)
+            DaysOfWeek.Wednesday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeWednesday = !_AddCounterUiState.value.includeWednesday)
 
-            DaysOfWeek.Thursday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeThursday = !_CounterCreationUiState.value.includeThursday)
+            DaysOfWeek.Thursday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeThursday = !_AddCounterUiState.value.includeThursday)
 
-            DaysOfWeek.Friday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeFriday = !_CounterCreationUiState.value.includeFriday)
+            DaysOfWeek.Friday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeFriday = !_AddCounterUiState.value.includeFriday)
 
-            DaysOfWeek.Saturday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeSaturday = !_CounterCreationUiState.value.includeSaturday)
+            DaysOfWeek.Saturday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeSaturday = !_AddCounterUiState.value.includeSaturday)
 
-            DaysOfWeek.Sunday -> _CounterCreationUiState.value = _CounterCreationUiState.value
-                .copy(includeSunday = !_CounterCreationUiState.value.includeSunday)
+            DaysOfWeek.Sunday -> _AddCounterUiState.value = _AddCounterUiState.value
+                .copy(includeSunday = !_AddCounterUiState.value.includeSunday)
         }
     }
 
     fun changeCountingType(countingType: CountingType) {
         when (countingType) {
-            CountingType.DAYS -> _CounterCreationUiState.value = _CounterCreationUiState.value
+            CountingType.DAYS -> _AddCounterUiState.value = _AddCounterUiState.value
                 .copy(countingType = CountingType.DAYS)
 
-            CountingType.WEEKS -> _CounterCreationUiState.value = _CounterCreationUiState.value
+            CountingType.WEEKS -> _AddCounterUiState.value = _AddCounterUiState.value
                 .copy(countingType = CountingType.WEEKS)
 
-            CountingType.MONTHS -> _CounterCreationUiState.value = _CounterCreationUiState.value
+            CountingType.MONTHS -> _AddCounterUiState.value = _AddCounterUiState.value
                 .copy(countingType = CountingType.MONTHS)
 
-            CountingType.YEARS -> _CounterCreationUiState.value = _CounterCreationUiState.value
+            CountingType.YEARS -> _AddCounterUiState.value = _AddCounterUiState.value
                 .copy(countingType = CountingType.YEARS)
         }
     }
@@ -163,7 +165,7 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
                 selectedDay
             ).differenceInYearsFraction()
 
-        when (counterState.value.countingType) {
+        when (addCounterState.value.countingType) {
             CountingType.DAYS -> {
                 countingNumber =
                     (DateCalculationUtils(
@@ -173,13 +175,13 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
                     )).excludeDayOfWeek(
                         differenceInDays,
                         daysOfWeekRemaining,
-                        counterState.value.includeMonday,
-                        counterState.value.includeTuesday,
-                        counterState.value.includeWednesday,
-                        counterState.value.includeThursday,
-                        counterState.value.includeFriday,
-                        counterState.value.includeSaturday,
-                        counterState.value.includeSunday
+                        addCounterState.value.includeMonday,
+                        addCounterState.value.includeTuesday,
+                        addCounterState.value.includeWednesday,
+                        addCounterState.value.includeThursday,
+                        addCounterState.value.includeFriday,
+                        addCounterState.value.includeSaturday,
+                        addCounterState.value.includeSunday
                     ).toString()
             }
 
@@ -228,7 +230,7 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
         countingDirection =
             if (differenceInDays < 0) CountingDirection.PAST else CountingDirection.FUTURE
 
-        _CounterCreationUiState.value = _CounterCreationUiState.value.copy(
+        _AddCounterUiState.value = _AddCounterUiState.value.copy(
             dayOfMonth = selectedDay,
             month = selectedMonth,
             year = selectedYear,
@@ -238,27 +240,27 @@ class CounterCreationViewModel(private val counterRepository: CounterRepository)
     }
 
     fun saveCounter() {
-        if (_CounterCreationUiState.value.dayOfMonth != 0
-            && _CounterCreationUiState.value.month != 0
-            && _CounterCreationUiState.value.year != 0
+        if (_AddCounterUiState.value.dayOfMonth != 0
+            && _AddCounterUiState.value.month != 0
+            && _AddCounterUiState.value.year != 0
         ) {
             val counterToSave = Counter(
-                counterId = _CounterCreationUiState.value.counterId,
-                eventName = _CounterCreationUiState.value.eventName,
-                bgStartColor = _CounterCreationUiState.value.bgStartColor,
-                bgCenterColor = _CounterCreationUiState.value.bgCenterColor,
-                bgEndColor = _CounterCreationUiState.value.bgEndColor,
-                dayOfMonth = _CounterCreationUiState.value.dayOfMonth,
-                month = _CounterCreationUiState.value.month,
-                year = _CounterCreationUiState.value.year,
-                countingType = _CounterCreationUiState.value.countingType,
-                includeMonday = _CounterCreationUiState.value.includeMonday,
-                includeTuesday = _CounterCreationUiState.value.includeTuesday,
-                includeWednesday = _CounterCreationUiState.value.includeWednesday,
-                includeThursday = _CounterCreationUiState.value.includeThursday,
-                includeFriday = _CounterCreationUiState.value.includeFriday,
-                includeSaturday = _CounterCreationUiState.value.includeSaturday,
-                includeSunday = _CounterCreationUiState.value.includeSunday
+                counterId = _AddCounterUiState.value.counterId,
+                eventName = _AddCounterUiState.value.eventName,
+                bgStartColor = _AddCounterUiState.value.bgStartColor,
+                bgCenterColor = _AddCounterUiState.value.bgCenterColor,
+                bgEndColor = _AddCounterUiState.value.bgEndColor,
+                dayOfMonth = _AddCounterUiState.value.dayOfMonth,
+                month = _AddCounterUiState.value.month,
+                year = _AddCounterUiState.value.year,
+                countingType = _AddCounterUiState.value.countingType,
+                includeMonday = _AddCounterUiState.value.includeMonday,
+                includeTuesday = _AddCounterUiState.value.includeTuesday,
+                includeWednesday = _AddCounterUiState.value.includeWednesday,
+                includeThursday = _AddCounterUiState.value.includeThursday,
+                includeFriday = _AddCounterUiState.value.includeFriday,
+                includeSaturday = _AddCounterUiState.value.includeSaturday,
+                includeSunday = _AddCounterUiState.value.includeSunday
             )
 
             viewModelScope.launch() {
