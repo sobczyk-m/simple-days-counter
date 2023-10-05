@@ -145,6 +145,12 @@ class HomeViewModel(private val counterRepository: CounterRepository) : ViewMode
         )
     }
 
+    fun deleteCounter(counterId: Int) {
+        viewModelScope.launch {
+            counterRepository.deleteCounter(counterId)
+        }
+    }
+
     public fun addCountdown(context: Context) {
         val intent = Intent(context, AddCountdownActivity::class.java)
         context.startActivity(intent)

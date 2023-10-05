@@ -14,8 +14,8 @@ interface CounterDao {
     @Update
     suspend fun updateCounter(counter: Counter)
 
-    @Delete
-    suspend fun deleteCounter(counter: Counter)
+    @Query("DELETE FROM counter WHERE counterId = :counterId")
+    suspend fun deleteCounter(counterId: Int)
 
     @Query("SELECT * FROM counter")
     fun getWholeListFromCounter(): Flow<List<Counter>>

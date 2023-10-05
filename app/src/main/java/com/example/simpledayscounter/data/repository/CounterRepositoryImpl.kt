@@ -16,8 +16,8 @@ class CounterRepositoryImpl(
         dao.updateCounter(counter)
     }
 
-    override suspend fun deleteCounter(counter: Counter) {
-        dao.deleteCounter(counter)
+    override suspend fun deleteCounter(counterId: Int) {
+        dao.deleteCounter(counterId)
     }
 
     override fun getWholeListFromCounter(): Flow<List<Counter>> {

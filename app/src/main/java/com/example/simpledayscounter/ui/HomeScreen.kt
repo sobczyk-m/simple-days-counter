@@ -1,5 +1,6 @@
 package com.example.simpledayscounter.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -14,14 +15,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -78,18 +82,23 @@ fun HomeScreen(
     ) { innerPadding ->
         CountersList(
             counterList = homeUiState.counterList,
-            modifier = modifier.padding(innerPadding)
+            modifier = modifier.padding(innerPadding),
+            onCounterSwipe = { counterId -> viewModel.deleteCounter(counterId) }
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CountersList(counterList: List<CounterUiState>, modifier: Modifier = Modifier) {
+fun CountersList(
+    counterList: List<CounterUiState>, modifier: Modifier = Modifier,
+    onCounterSwipe: (Int) -> Unit
+) {
     LazyColumn(
         modifier = modifier.padding(5.dp, 5.dp, 5.dp, 0.dp)
     ) {
         items(items = counterList, key = { counter -> counter.counterId!! }) {
-
+            val counter = it
             val timeUnitToDisplay = when (it.countingType) {
                 CountingType.DAYS -> R.string.rb_days
                 CountingType.WEEKS -> R.string.rb_weeks
@@ -101,19 +110,34 @@ fun CountersList(counterList: List<CounterUiState>, modifier: Modifier = Modifie
                 R.string.app_widget_counting_text_time_ago
             } else R.string.app_widget_counting_text_time_left
 
-            Counter(
-                modifier = Modifier
-                    .height(100.dp)
-                    .padding(3.dp),
-                eventName = it.eventName,
-                countingNumber = it.countingNumber,
-                countingText = LocalContext.current.getString(
-                    direction,
-                    (LocalContext.current.getString(timeUnitToDisplay))
-                ),
-                bgStartColor = it.bgStartColor,
-                bgCenterColor = it.bgCenterColor,
-                bgEndColor = it.bgEndColor
+            val dismissState = rememberDismissState(
+                confirmValueChange = {
+                    if (it == DismissValue.DismissedToEnd || it == DismissValue.DismissedToStart) {
+                        onCounterSwipe(counter.counterId!!)
+                    }
+                    true
+                }
+            )
+
+            SwipeToDismiss(
+                state = dismissState,
+                modifier = Modifier,
+                background = { /* TODO() */ },
+                dismissContent = {
+                    Counter(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .padding(3.dp),
+                        eventName = it.eventName,
+                        countingNumber = it.countingNumber,
+                        countingText = LocalContext.current.getString(
+                            direction, (LocalContext.current.getString(timeUnitToDisplay))
+                        ),
+                        bgStartColor = it.bgStartColor,
+                        bgCenterColor = it.bgCenterColor,
+                        bgEndColor = it.bgEndColor
+                    )
+                }
             )
         }
     }
@@ -225,7 +249,8 @@ fun CunterListPreview() {
                 bgCenterColor = -7952153,
                 bgEndColor = -10486799
             )
-        )
+        ),
+        onCounterSwipe = {}
     )
 }
 

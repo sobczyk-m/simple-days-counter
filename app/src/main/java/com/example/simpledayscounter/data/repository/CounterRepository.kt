@@ -10,7 +10,7 @@ interface CounterRepository {
 
     suspend fun updateCounter(counter: Counter)
 
-    suspend fun deleteCounter(counter: Counter)
+    suspend fun deleteCounter(counterId: Int)
 
     fun getWholeListFromCounter(): Flow<List<Counter>>
 
