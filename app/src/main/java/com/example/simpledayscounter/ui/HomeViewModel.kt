@@ -1,7 +1,5 @@
 package com.example.simpledayscounter.ui
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.simpledayscounter.AddCountdownActivity
 import com.example.simpledayscounter.CounterApplication
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
@@ -149,11 +146,6 @@ class HomeViewModel(private val counterRepository: CounterRepository) : ViewMode
         viewModelScope.launch {
             counterRepository.deleteCounter(counterId)
         }
-    }
-
-    public fun addCountdown(context: Context) {
-        val intent = Intent(context, AddCountdownActivity::class.java)
-        context.startActivity(intent)
     }
 }
 
