@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +35,9 @@ fun ColorPicker(
     startColor: Color,
     onColorChange: (Int) -> Unit,
 ) {
+    var currentColor by remember { mutableStateOf(startColor) }
     val controller = rememberColorPickerController()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,7 +48,7 @@ fun ColorPicker(
                 .fillMaxWidth()
                 .height(450.dp)
                 .padding(10.dp),
-            initialColor = startColor,
+            initialColor = currentColor,
             controller = controller,
             onColorChanged = {
                 onColorChange(controller.selectedColor.value.toArgb())
@@ -55,6 +61,7 @@ fun ColorPicker(
                 .height(35.dp)
                 .border(BorderStroke(3.dp, Color.Black)),
             controller = controller,
+            initialColor = currentColor,
             tileOddColor = Color.White,
             tileEvenColor = Color.Black
         )
@@ -64,6 +71,7 @@ fun ColorPicker(
                 .padding(10.dp)
                 .height(35.dp)
                 .border(BorderStroke(3.dp, Color.Black)),
+            initialColor = currentColor,
             controller = controller,
         )
         Spacer(
