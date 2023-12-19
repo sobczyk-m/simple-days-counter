@@ -229,7 +229,7 @@ fun AddCounterScreen(
                 if (showDatePicker) {
                     CustomDatePickerDialog(handleDatePick = { day, month, year ->
                         viewModel.handleDatePick(day, month, year)
-                    })
+                    }, onClose = { showDatePicker = false })
                 }
 
                 Text(

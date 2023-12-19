@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,11 +23,19 @@ import java.util.Calendar
 @Composable
 fun CustomDatePickerDialog(
     handleDatePick: (day: Int, month: Int, year: Int) -> Unit,
+    onClose: () -> Unit
 ) {
     val snackState = remember { SnackbarHostState() }
     val dpdScope = rememberCoroutineScope()
     SnackbarHost(hostState = snackState, Modifier)
     val openDialog = remember { mutableStateOf(true) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            onClose()
+        }
+    }
+
     if (openDialog.value) {
         val datePickerState = rememberDatePickerState()
         val confirmEnabled =
@@ -76,5 +85,5 @@ fun CustomDatePickerDialog(
 @Preview(showBackground = true)
 @Composable
 fun CustomDatePickerDialogPreview() {
-    CustomDatePickerDialog({ _, _, _ -> { } })
+    CustomDatePickerDialog({ _, _, _ -> { } }, onClose = {})
 }
