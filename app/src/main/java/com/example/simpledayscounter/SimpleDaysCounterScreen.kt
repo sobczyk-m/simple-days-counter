@@ -34,13 +34,13 @@ fun SimpleDaysCounterApp(
         composable(route = SimpleDaysCounterScreen.Counters.name,
             enterTransition = {
                 slideInHorizontally(
-                    initialOffsetX = { screenWidth.toInt() },
+                    initialOffsetX = { screenWidth },
                     animationSpec = tween(500)
                 )
             },
             exitTransition = {
                 slideOutHorizontally(
-                    targetOffsetX = { -screenWidth.toInt() },
+                    targetOffsetX = { -screenWidth },
                     animationSpec = tween(500)
                 )
             }
@@ -50,13 +50,13 @@ fun SimpleDaysCounterApp(
         composable(route = SimpleDaysCounterScreen.AddCounter.name,
             enterTransition = {
                 slideInHorizontally(
-                    initialOffsetX = { screenWidth.toInt() },
+                    initialOffsetX = { screenWidth },
                     animationSpec = tween(500)
                 )
             },
             exitTransition = {
                 slideOutHorizontally(
-                    targetOffsetX = { -screenWidth.toInt() },
+                    targetOffsetX = { -screenWidth },
                     animationSpec = tween(500)
                 )
             }
