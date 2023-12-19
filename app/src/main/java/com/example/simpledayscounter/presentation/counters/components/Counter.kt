@@ -61,12 +61,14 @@ fun Counter(
             Text(
                 text = countingNumber,
                 fontSize = 24.sp,
+                textAlign = TextAlign.Center,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = countingText,
                 fontSize = 12.sp,
+                textAlign = TextAlign.Center,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
