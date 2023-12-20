@@ -61,16 +61,9 @@ fun AddCounterScreen(
 ) {
     val addCounterState = viewModel.addCounterState.collectAsState().value
     val scrollState = rememberScrollState()
-    var showDatePicker by remember {
-        mutableStateOf(false)
-    }
-
-    var showColorPicker by remember {
-        mutableStateOf(false)
-    }
-    var colorPickerColorToChange by remember {
-        mutableStateOf(CounterColor.StartColor)
-    }
+    var showDatePicker by remember { mutableStateOf(false) }
+    var showColorPicker by remember { mutableStateOf(false) }
+    var colorPickerColorToChange by remember { mutableStateOf(CounterColor.StartColor) }
 
     Scaffold(
         topBar = {
@@ -243,67 +236,27 @@ fun AddCounterScreen(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CountingType.values().forEachIndexed() { index, countingOption ->
-                        RadioButton(selected = when (index) {
-                            0 -> addCounterState.countingType == CountingType.DAYS
-                            1 -> addCounterState.countingType == CountingType.WEEKS
-                            2 -> addCounterState.countingType == CountingType.MONTHS
-                            3 -> addCounterState.countingType == CountingType.YEARS
-                            else -> false
-                        }, onClick = {
-                            when (countingOption) {
-                                CountingType.DAYS -> {
-                                    viewModel.changeCountingType(CountingType.DAYS)
-                                    if (addCounterState.dayOfMonth != 0)
-                                        viewModel.handleDatePick(
-                                            addCounterState.dayOfMonth,
-                                            addCounterState.month,
-                                            addCounterState.year
-                                        )
-                                }
-
-                                CountingType.WEEKS -> {
-                                    viewModel.changeCountingType(CountingType.WEEKS)
-                                    if (addCounterState.dayOfMonth != 0)
-                                        viewModel.handleDatePick(
-                                            addCounterState.dayOfMonth,
-                                            addCounterState.month,
-                                            addCounterState.year
-                                        )
-                                }
-
-                                CountingType.MONTHS -> {
-                                    viewModel.changeCountingType(CountingType.MONTHS)
-                                    if (addCounterState.dayOfMonth != 0)
-                                        viewModel.handleDatePick(
-                                            addCounterState.dayOfMonth,
-                                            addCounterState.month,
-                                            addCounterState.year
-                                        )
-                                }
-
-                                CountingType.YEARS -> {
-                                    viewModel.changeCountingType(CountingType.YEARS)
-                                    if (addCounterState.dayOfMonth != 0)
-                                        viewModel.handleDatePick(
-                                            addCounterState.dayOfMonth,
-                                            addCounterState.month,
-                                            addCounterState.year
-                                        )
-                                }
-                            }
-                        })
+                    CountingType.values().forEach { countingOption ->
+                        RadioButton(
+                            selected = addCounterState.countingType == countingOption,
+                            onClick = {
+                                viewModel.changeCountingType(countingOption)
+                                if (addCounterState.dayOfMonth != 0)
+                                    viewModel.handleDatePick(
+                                        addCounterState.dayOfMonth,
+                                        addCounterState.month,
+                                        addCounterState.year
+                                    )
+                            },
+                        )
                         Text(
-                            text = stringResource(
-                                id = getCountingTypeResource(countingOption)
-                            )
+                            text = stringResource(id = getCountingTypeResource(countingOption))
                         )
                     }
                 }
                 if (addCounterState.countingType == CountingType.DAYS) {
                     Text(
-                        modifier = Modifier
-                            .padding(0.dp, 0.dp, 0.dp, 10.dp),
+                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
                         text = stringResource(id = R.string.tv_day_exclude)
                     )
                     Column(modifier = Modifier) {
@@ -313,7 +266,7 @@ fun AddCounterScreen(
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Checkbox(checked = when (index) {
+                                val isChecked = when (index) {
                                     0 -> addCounterState.includeMonday
                                     1 -> addCounterState.includeTuesday
                                     2 -> addCounterState.includeWednesday
@@ -322,78 +275,17 @@ fun AddCounterScreen(
                                     5 -> addCounterState.includeSaturday
                                     6 -> addCounterState.includeSunday
                                     else -> false
-                                },
-                                    onCheckedChange = {
-                                        when (index) {
-                                            0 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Monday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
+                                }
 
-                                            1 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Tuesday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
-
-                                            2 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Wednesday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
-
-                                            3 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Thursday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
-
-                                            4 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Friday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
-
-                                            5 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Saturday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
-
-                                            6 -> {
-                                                viewModel.toggleDayOfWeek(DaysOfWeek.Sunday)
-                                                if (addCounterState.dayOfMonth != 0)
-                                                    viewModel.handleDatePick(
-                                                        addCounterState.dayOfMonth,
-                                                        addCounterState.month,
-                                                        addCounterState.year
-                                                    )
-                                            }
+                                Checkbox(checked = isChecked,
+                                    onCheckedChange =  {
+                                        viewModel.toggleDayOfWeek(DaysOfWeek.values()[index])
+                                        if (addCounterState.dayOfMonth != 0) {
+                                            viewModel.handleDatePick(
+                                                addCounterState.dayOfMonth,
+                                                addCounterState.month,
+                                                addCounterState.year
+                                            )
                                         }
                                     })
                                 Text(
