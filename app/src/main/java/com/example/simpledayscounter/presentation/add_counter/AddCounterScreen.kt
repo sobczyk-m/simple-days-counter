@@ -57,7 +57,7 @@ import com.example.simpledayscounter.presentation.counters.constants.CountingDir
 fun AddCounterScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: AddCounterViewModel = viewModel(factory = AddCounterViewModel.Factory)
+    viewModel: AddCounterViewModel = viewModel(factory = AddCounterViewModel.factory)
 ) {
     val addCounterState = viewModel.addCounterState.collectAsState().value
     val scrollState = rememberScrollState()
