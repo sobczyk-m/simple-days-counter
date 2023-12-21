@@ -1,4 +1,4 @@
-package com.example.simpledayscounter.presentation.add_counter
+package com.example.simpledayscounter.presentation.add_counter.model
 
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.presentation.counters.constants.CountingDirection

@@ -1,4 +1,4 @@
-package com.example.simpledayscounter.presentation.add_counter.components
+package com.example.simpledayscounter.presentation.add_counter.component.common
 
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog

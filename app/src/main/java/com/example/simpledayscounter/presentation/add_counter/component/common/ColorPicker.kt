@@ -1,4 +1,4 @@
-package com.example.simpledayscounter.presentation.add_counter.components
+package com.example.simpledayscounter.presentation.add_counter.component.common
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border

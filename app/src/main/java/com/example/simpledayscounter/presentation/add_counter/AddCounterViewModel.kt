@@ -1,6 +1,6 @@
 package com.example.simpledayscounter.presentation.add_counter
 
-import  androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
@@ -10,8 +10,9 @@ import com.example.simpledayscounter.SimpleDaysCounterApplication
 import com.example.simpledayscounter.data.enumeration.CountingType
 import com.example.simpledayscounter.data.model.Counter
 import com.example.simpledayscounter.data.repository.CounterRepository
-import com.example.simpledayscounter.presentation.add_counter.constants.CounterColor
-import com.example.simpledayscounter.presentation.add_counter.constants.DaysOfWeek
+import com.example.simpledayscounter.presentation.add_counter.model.AddCounterUiState
+import com.example.simpledayscounter.presentation.add_counter.model.enumeration.CounterColor
+import com.example.simpledayscounter.presentation.add_counter.model.enumeration.DaysOfWeek
 import com.example.simpledayscounter.presentation.counters.constants.CountingDirection
 import com.example.simpledayscounter.utils.DateCalculationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
