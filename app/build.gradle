@@ -33,11 +33,11 @@ android {
     compileOptions {
         // Java 8+ API desugaring support
         coreLibraryDesugaringEnabled = true
-        sourceCompatibility JavaVersion.VERSION_19
-        targetCompatibility JavaVersion.VERSION_20
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(20)
+        jvmToolchain(17)
     }
     buildFeatures {
         viewBinding true
