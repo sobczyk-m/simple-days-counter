@@ -1,5 +1,7 @@
 package com.example.simpledayscounter.presentation.add_counter
 
+import android.nfc.Tag
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -197,9 +199,11 @@ fun AddCounterScreen(
                     CounterColor.EndColor -> addCounterState.bgEndColor
                 }
 
-                ColorPicker(startColor = Color(startColor)) { color ->
-                    viewModel.changeCounterColor(colorToChange, color)
-                }
+                ColorPicker(
+                    startColor = Color(startColor),
+                    onColorChange = { color -> viewModel.changeCounterColor(colorToChange, color) },
+                    onBackPress = { showColorPicker = false; }
+                )
             }
         }
     }

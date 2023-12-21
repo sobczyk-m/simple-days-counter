@@ -1,5 +1,6 @@
 package com.example.simpledayscounter.presentation.add_counter.component.common
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +35,14 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 fun ColorPicker(
     startColor: Color,
     onColorChange: (Int) -> Unit,
+    onBackPress: () -> Unit
 ) {
     var currentColor by remember { mutableStateOf(startColor) }
     val controller = rememberColorPickerController()
+
+    BackHandler {
+        onBackPress()
+    }
 
     Column(
         modifier = Modifier
@@ -99,5 +105,9 @@ fun ColorPicker(
 @Preview(showBackground = true)
 @Composable
 fun ColorPickerPreview() {
-    ColorPicker(startColor = Color(-3052635), { _ -> {} })
+    ColorPicker(
+        startColor = Color(-3052635),
+        onColorChange = { _ -> {} },
+        onBackPress = { {} }
+    )
 }
